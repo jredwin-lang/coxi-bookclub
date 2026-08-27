@@ -77,13 +77,14 @@ nav button.active {
 }
 .nav-kakao {
   display: inline-flex; align-items: center;
-  background: var(--burgundy-d); color: #fff;
-  font: inherit; font-size: .78rem; font-weight: 700;
+  background: none; color: var(--mid);
+  border: none;
+  font: inherit; font-size: .78rem; font-weight: 500;
   padding: 7px 14px; border-radius: 6px;
   text-decoration: none; transition: all .18s;
-  margin-left: 4px; white-space: nowrap;
+  margin-left: 0; white-space: nowrap; cursor: pointer;
 }
-.nav-kakao:hover { background: var(--burgundy); }
+.nav-kakao:hover { background: var(--petal); color: var(--burgundy); }
 
 /* ── 히어로 ── */
 .hero {
@@ -236,12 +237,12 @@ nav button.active {
   margin-bottom: 16px; padding-bottom: 10px;
   border-bottom: 2px solid var(--burgundy);
 }
-.overlap-filter-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.overlap-filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 .ov-btn {
   background: #fff; border: 1.5px solid var(--border);
   color: var(--mid); font: inherit; font-size: .85rem;
   padding: 7px 20px; border-radius: 24px; cursor: pointer;
-  transition: all .18s;
+  transition: all .18s; white-space: nowrap;
 }
 .ov-btn.active { background: var(--burgundy); border-color: var(--burgundy); color: #fff; font-weight: 700; }
 .overlap-table-wrap { overflow-x: auto; border-radius: var(--r-lg); box-shadow: 0 2px 16px var(--shadow); }
@@ -253,8 +254,10 @@ nav button.active {
   background: var(--burgundy); color: #fff;
   padding: 12px 18px; text-align: left;
   font-size: .77rem; font-weight: 600; letter-spacing: .04em;
+  white-space: nowrap;
 }
 .overlap-table td { padding: 12px 18px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.overlap-table td:first-child { min-width: 120px; word-break: keep-all; }
 .overlap-table tr:last-child td { border-bottom: none; }
 .overlap-table tr:hover td { background: var(--petal); }
 .cnt-pill {
@@ -402,6 +405,8 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   .stat-lbl { font-size: .65rem; }
   .book-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .book-card { padding: 12px; }
+  .book-title { word-break: keep-all; }
+  .ov-btn { font-size: .78rem; padding: 6px 12px; }
   .app { padding: 20px 14px 60px; }
 }
 </style>
@@ -487,9 +492,7 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 </div>
 
 <footer>
-  <img src="coexist_logo.png" alt="COEXIST" style="height:36px;filter:brightness(0) invert(1);opacity:.9;margin-bottom:8px;"><br>
-  <img src="coxi_logo.png" alt="COXI" style="height:18px;filter:brightness(0) invert(1);opacity:.6;margin-bottom:10px;"><br>
-  <p style="font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:4px;">강남 독서모임 COXI · 추천도서목록</p>
+  <img src="coexist_logo.png" alt="COEXIST" style="height:72px;filter:brightness(0) invert(1);opacity:.9;margin-bottom:16px;"><br>
   <p><strong>강남 독서모임 COXI(코지)</strong> · 필독서 가이드</p>
   <p style="margin-top:6px;font-size:.75rem;color:rgba(255,255,255,.65)">지성과 감성이 공존하는 사람들의 커뮤니티</p>
 </footer>
