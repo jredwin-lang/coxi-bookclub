@@ -3,505 +3,564 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>코지 북클럽 — 필독서 가이드</title>
+<title>COXI 북클럽 — 필독서 가이드</title>
 <style>
-  /* ── 토큰 ── */
-  :root {
-    --cream:    #F7F3ED;
-    --parchment:#EDE6D9;
-    --warm-mid: #C9B99A;
-    --bark:     #7A5C3E;
-    --ink:      #2C2016;
-    --ink-soft: #5C4A35;
-    --ember:    #B85C2A;
-    --sage:     #6B7F6A;
-    --gold:     #C8963C;
-    --white:    #FDFAF6;
-    --shadow:   rgba(44,32,22,.10);
-    --r:        10px;
-    --r-lg:     18px;
-  }
+:root {
+  --burgundy:   #A50034;
+  --burgundy-d: #7A0026;
+  --burgundy-l: #C8224F;
+  --rose:       #D4849A;
+  --gold:       #C9A96E;
+  --gold-l:     #E8D5B0;
+  --offwhite:   #FAFAF8;
+  --card-bg:    #FFFFFF;
+  --petal:      #F9F0F2;
+  --charcoal:   #1E1E1E;
+  --mid:        #5A5A5A;
+  --light:      #9A9A9A;
+  --border:     #EDE8E8;
+  --shadow:     rgba(165,0,52,.10);
+  --r:          10px;
+  --r-lg:       16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--offwhite);
+  color: var(--charcoal);
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
 
-  /* ── 리셋 & 베이스 ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'Georgia', 'Nanum Myeongjo', serif;
-    font-size: 15px;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
+/* ── 헤더 ── */
+header {
+  background: #fff;
+  border-bottom: 2px solid var(--burgundy);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 60px;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.header-brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.header-logo { height: 32px; width: auto; }
+.header-title {
+  font-size: .82rem;
+  color: var(--mid);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.header-title strong { color: var(--burgundy); font-weight: 700; }
+nav { display: flex; gap: 4px; margin-left: auto; }
+nav button {
+  background: none; border: none;
+  color: var(--mid); font: inherit; font-size: .85rem;
+  padding: 7px 16px; border-radius: 6px; cursor: pointer;
+  transition: all .18s; font-weight: 500;
+}
+nav button:hover { background: var(--petal); color: var(--burgundy); }
+nav button.active {
+  background: var(--burgundy); color: #fff; font-weight: 700;
+}
 
-  /* ── 헤더 ── */
-  header {
-    background: var(--bark);
-    color: var(--cream);
-    padding: 0 24px;
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; gap: 16px;
-    height: 56px;
-    box-shadow: 0 2px 12px var(--shadow);
-  }
-  .logo { font-size: 1.1rem; font-weight: bold; letter-spacing: .04em; white-space: nowrap; }
-  .logo span { color: var(--gold); }
-  nav { display: flex; gap: 4px; margin-left: auto; }
-  nav button {
-    background: none; border: none; color: var(--parchment);
-    font: inherit; font-size: .85rem; padding: 6px 14px;
-    border-radius: 20px; cursor: pointer; transition: background .2s;
-  }
-  nav button:hover, nav button.active {
-    background: rgba(255,255,255,.15); color: #fff;
-  }
+/* ── 히어로 ── */
+.hero {
+  background: var(--burgundy);
+  background-image: linear-gradient(135deg, var(--burgundy-d) 0%, var(--burgundy) 60%, var(--burgundy-l) 100%);
+  color: #fff;
+  padding: 56px 28px 48px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero-logo {
+  height: 52px; width: auto;
+  margin-bottom: 18px;
+  filter: brightness(0) invert(1);
+  opacity: .92;
+}
+.hero h1 {
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 700; line-height: 1.3;
+  margin-bottom: 10px; letter-spacing: -.02em;
+}
+.hero-slogan {
+  font-size: .95rem; opacity: .82;
+  margin-bottom: 36px; letter-spacing: .01em;
+}
+.hero-slogan em { color: var(--gold-l); font-style: normal; font-weight: 600; }
+.hero-stats {
+  display: inline-flex; gap: 0;
+  background: rgba(255,255,255,.12);
+  border-radius: 12px; overflow: hidden;
+}
+.stat {
+  padding: 14px 28px; text-align: center;
+  border-right: 1px solid rgba(255,255,255,.15);
+}
+.stat:last-child { border-right: none; }
+.stat-num {
+  display: block; font-size: 1.7rem; font-weight: 800;
+  color: var(--gold-l); line-height: 1; margin-bottom: 2px;
+}
+.stat-lbl { font-size: .72rem; opacity: .75; letter-spacing: .06em; text-transform: uppercase; }
 
-  /* ── 히어로 ── */
-  .hero {
-    background: linear-gradient(135deg, var(--bark) 0%, #4A3020 100%);
-    color: var(--cream);
-    padding: 64px 24px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '📖';
-    position: absolute; font-size: 180px; opacity: .06;
-    top: -20px; right: -20px; transform: rotate(12deg);
-    pointer-events: none;
-  }
-  .hero h1 {
-    font-size: clamp(1.8rem, 5vw, 3rem);
-    line-height: 1.25;
-    margin-bottom: 14px;
-    letter-spacing: -.01em;
-  }
-  .hero h1 em { color: var(--gold); font-style: normal; }
-  .hero p { font-size: 1rem; opacity: .8; max-width: 480px; margin: 0 auto 32px; }
-  .hero-stats {
-    display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    display: block; font-size: 2rem; font-weight: bold; color: var(--gold);
-    line-height: 1;
-  }
-  .stat-lbl { font-size: .78rem; opacity: .7; letter-spacing: .05em; text-transform: uppercase; }
+/* ── 앱 본문 ── */
+.app { max-width: 1160px; margin: 0 auto; padding: 32px 20px 80px; }
 
-  /* ── 메인 레이아웃 ── */
-  .app { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+/* ── 검색 ── */
+.search-row {
+  display: flex; gap: 10px; margin-bottom: 20px; align-items: center;
+}
+.search-wrap {
+  flex: 1; position: relative;
+}
+.search-wrap input {
+  width: 100%; background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 10px 16px 10px 40px;
+  font: inherit; font-size: .95rem; color: var(--charcoal);
+  outline: none; transition: border .2s;
+}
+.search-wrap input:focus { border-color: var(--burgundy); }
+.search-wrap input::placeholder { color: var(--light); }
+.search-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  color: var(--light); font-size: 1rem; pointer-events: none;
+}
+.result-count { font-size: .82rem; color: var(--mid); white-space: nowrap; }
 
-  /* ── 섹션 탭 ── */
-  .tabs {
-    display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
-  }
-  .tab-btn {
-    background: var(--white); border: 1.5px solid var(--parchment);
-    color: var(--ink-soft); font: inherit; font-size: .85rem;
-    padding: 8px 18px; border-radius: 20px; cursor: pointer;
-    transition: all .2s;
-  }
-  .tab-btn:hover { border-color: var(--bark); color: var(--bark); }
-  .tab-btn.active {
-    background: var(--bark); border-color: var(--bark);
-    color: var(--white); font-weight: bold;
-  }
+/* ── 대카테고리 탭 ── */
+.big-cat-row {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.big-cat-btn {
+  background: #fff; border: 1.5px solid var(--border);
+  color: var(--mid); font: inherit; font-size: .85rem; font-weight: 600;
+  padding: 8px 20px; border-radius: 24px; cursor: pointer;
+  transition: all .18s;
+}
+.big-cat-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
+.big-cat-btn.active {
+  background: var(--burgundy); border-color: var(--burgundy);
+  color: #fff;
+}
 
-  /* ── 검색 ── */
-  .search-bar {
-    display: flex; gap: 10px; margin-bottom: 20px; align-items: center;
-  }
-  .search-bar input {
-    flex: 1; background: var(--white); border: 1.5px solid var(--parchment);
-    border-radius: var(--r); padding: 10px 16px;
-    font: inherit; font-size: .95rem; color: var(--ink);
-    outline: none; transition: border .2s;
-  }
-  .search-bar input:focus { border-color: var(--bark); }
-  .search-bar input::placeholder { color: var(--warm-mid); }
-  .result-count { font-size: .82rem; color: var(--ink-soft); white-space: nowrap; }
+/* ── 소카테고리 칩 ── */
+.sub-cat-row {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 24px; padding-left: 4px;
+  min-height: 0; transition: all .2s;
+}
+.sub-chip {
+  background: var(--petal); border: 1.5px solid #EDD8DD;
+  color: var(--burgundy); font: inherit; font-size: .78rem;
+  padding: 4px 14px; border-radius: 20px; cursor: pointer;
+  transition: all .18s;
+}
+.sub-chip:hover { background: var(--rose); border-color: var(--rose); color: #fff; }
+.sub-chip.on { background: var(--burgundy-d); border-color: var(--burgundy-d); color: #fff; }
 
-  /* ── 필터 칩 ── */
-  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
-  .chip {
-    background: var(--white); border: 1.5px solid var(--parchment);
-    color: var(--ink-soft); font: inherit; font-size: .78rem;
-    padding: 5px 14px; border-radius: 20px; cursor: pointer;
-    transition: all .18s;
-  }
-  .chip:hover { border-color: var(--warm-mid); }
-  .chip.on { background: var(--ember); border-color: var(--ember); color: #fff; }
+/* ── 책 그리드 ── */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: var(--r-lg);
+  padding: 18px 18px 16px;
+  border: 1.5px solid var(--border);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative; cursor: pointer;
+}
+.book-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px var(--shadow);
+  border-color: var(--rose);
+}
+.book-big-cat {
+  font-size: .68rem; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; margin-bottom: 3px;
+  color: var(--rose);
+}
+.book-sub-cat {
+  font-size: .7rem; color: var(--light); margin-bottom: 8px;
+}
+.book-title {
+  font-size: .97rem; font-weight: 700; line-height: 1.35;
+  color: var(--charcoal); margin-bottom: 5px;
+}
+.book-author { font-size: .8rem; color: var(--mid); margin-bottom: 10px; }
+.overlap-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+.badge {
+  font-size: .65rem; background: var(--petal);
+  color: var(--burgundy); padding: 2px 8px;
+  border-radius: 8px; white-space: nowrap;
+}
+.badge.hot { background: var(--gold); color: var(--charcoal); font-weight: 700; }
+.overlap-pill {
+  position: absolute; top: 14px; right: 14px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--burgundy); color: #fff;
+  font-size: .7rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.overlap-pill.gold { background: var(--gold); color: var(--charcoal); }
 
-  /* ── 책 카드 그리드 ── */
-  .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-  }
-  .book-card {
-    background: var(--white);
-    border-radius: var(--r-lg);
-    padding: 20px;
-    border: 1.5px solid var(--parchment);
-    transition: transform .2s, box-shadow .2s;
-    position: relative;
-    cursor: pointer;
-  }
-  .book-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px var(--shadow);
-    border-color: var(--warm-mid);
-  }
-  .book-cat {
-    font-size: .72rem; font-family: 'Arial', sans-serif;
-    color: var(--ember); font-weight: bold; letter-spacing: .06em;
-    text-transform: uppercase; margin-bottom: 6px;
-  }
-  .book-title {
-    font-size: 1rem; font-weight: bold; line-height: 1.35;
-    color: var(--ink); margin-bottom: 5px;
-  }
-  .book-author {
-    font-size: .82rem; color: var(--ink-soft);
-  }
-  .overlap-badges {
-    display: flex; gap: 4px; flex-wrap: wrap; margin-top: 12px;
-  }
-  .badge {
-    font-size: .68rem; font-family: 'Arial', sans-serif;
-    background: var(--parchment); color: var(--bark);
-    padding: 2px 8px; border-radius: 10px; white-space: nowrap;
-  }
-  .badge.hot { background: var(--gold); color: var(--ink); font-weight: bold; }
-  .overlap-count {
-    position: absolute; top: 14px; right: 14px;
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--bark); color: var(--cream);
-    font-size: .72rem; font-weight: bold; font-family: 'Arial', sans-serif;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .overlap-count.gold { background: var(--gold); color: var(--ink); }
+/* ── 중복 도서 테이블 ── */
+.section-header {
+  font-size: 1.05rem; font-weight: 700; color: var(--burgundy);
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--burgundy);
+}
+.overlap-filter-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.ov-btn {
+  background: #fff; border: 1.5px solid var(--border);
+  color: var(--mid); font: inherit; font-size: .85rem;
+  padding: 7px 20px; border-radius: 24px; cursor: pointer;
+  transition: all .18s;
+}
+.ov-btn.active { background: var(--burgundy); border-color: var(--burgundy); color: #fff; font-weight: 700; }
+.overlap-table-wrap { overflow-x: auto; border-radius: var(--r-lg); box-shadow: 0 2px 16px var(--shadow); }
+.overlap-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .87rem; background: #fff;
+}
+.overlap-table th {
+  background: var(--burgundy); color: #fff;
+  padding: 12px 18px; text-align: left;
+  font-size: .77rem; font-weight: 600; letter-spacing: .04em;
+}
+.overlap-table td { padding: 12px 18px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.overlap-table tr:last-child td { border-bottom: none; }
+.overlap-table tr:hover td { background: var(--petal); }
+.cnt-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--burgundy); color: #fff;
+  font-size: .78rem; font-weight: 800;
+}
+.cnt-pill.g4 { background: var(--gold); color: var(--charcoal); }
+.list-tag {
+  display: inline-block; font-size: .7rem;
+  background: var(--petal); color: var(--burgundy);
+  padding: 2px 9px; border-radius: 8px; margin: 2px 2px 2px 0;
+}
 
-  /* ── 중복 도서 섹션 ── */
-  .overlap-table-wrap { overflow-x: auto; }
-  .overlap-table {
-    width: 100%; border-collapse: collapse;
-    font-size: .88rem; background: var(--white);
-    border-radius: var(--r-lg); overflow: hidden;
-    box-shadow: 0 2px 12px var(--shadow);
-  }
-  .overlap-table th {
-    background: var(--bark); color: var(--cream);
-    padding: 12px 16px; text-align: left; font-size: .78rem;
-    letter-spacing: .04em; font-family: 'Arial', sans-serif;
-    font-weight: normal;
-  }
-  .overlap-table td { padding: 11px 16px; border-bottom: 1px solid var(--parchment); vertical-align: top; }
-  .overlap-table tr:last-child td { border-bottom: none; }
-  .overlap-table tr:hover td { background: var(--cream); }
-  .count-pill {
-    display: inline-block;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--bark); color: #fff;
-    text-align: center; line-height: 26px;
-    font-size: .78rem; font-weight: bold;
-  }
-  .count-pill.c4 { background: var(--ember); }
-  .list-tag {
-    display: inline-block; font-size: .7rem;
-    background: var(--parchment); color: var(--bark);
-    padding: 2px 8px; border-radius: 8px; margin: 2px 2px 2px 0;
-  }
+/* ── 목록 정보 카드 ── */
+.list-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 16px; }
+.list-card {
+  background: #fff; border-radius: var(--r-lg);
+  border: 1.5px solid var(--border); padding: 22px;
+  transition: box-shadow .2s, border-color .2s;
+}
+.list-card:hover { box-shadow: 0 6px 22px var(--shadow); border-color: var(--rose); }
+.list-idx {
+  font-size: 2rem; font-weight: 900; color: var(--border);
+  line-height: 1; margin-bottom: 8px;
+}
+.list-name { font-size: .97rem; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+.list-meta { font-size: .8rem; color: var(--mid); line-height: 1.7; }
+.list-meta strong { color: var(--burgundy); }
 
-  /* ── 목록 정보 카드 ── */
-  .list-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 16px; }
-  .list-card {
-    background: var(--white); border-radius: var(--r-lg);
-    border: 1.5px solid var(--parchment); padding: 22px;
-    transition: box-shadow .2s;
-  }
-  .list-card:hover { box-shadow: 0 6px 20px var(--shadow); }
-  .list-card-idx {
-    font-size: 1.8rem; color: var(--parchment); font-weight: bold;
-    line-height: 1; margin-bottom: 8px; font-family: 'Arial', sans-serif;
-  }
-  .list-card-name { font-size: 1rem; font-weight: bold; margin-bottom: 6px; }
-  .list-card-meta { font-size: .8rem; color: var(--ink-soft); line-height: 1.6; }
-  .list-card-meta strong { color: var(--bark); }
+/* ── 빈 상태 ── */
+.empty {
+  grid-column: 1/-1; text-align: center;
+  padding: 60px 20px; color: var(--mid);
+}
+.empty span { display: block; font-size: 2.5rem; margin-bottom: 12px; }
 
-  /* ── 빈 결과 ── */
-  .empty {
-    text-align: center; padding: 60px 20px;
-    color: var(--ink-soft); font-size: .95rem;
-  }
-  .empty-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+/* ── 모달 ── */
+.backdrop {
+  display: none; position: fixed; inset: 0;
+  background: rgba(30,30,30,.5); z-index: 300;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.backdrop.open { display: flex; }
+.modal {
+  background: #fff; border-radius: var(--r-lg);
+  max-width: 500px; width: 100%; padding: 32px;
+  max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 30px 70px rgba(0,0,0,.25);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--petal); border: none; border-radius: 50%;
+  width: 32px; height: 32px; font-size: .95rem;
+  cursor: pointer; color: var(--mid); transition: background .2s;
+}
+.modal-close:hover { background: var(--rose); color: #fff; }
+.modal-big { font-size: .72rem; font-weight: 700; letter-spacing: .07em; color: var(--rose); margin-bottom: 6px; text-transform: uppercase; }
+.modal-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+.modal-author { color: var(--mid); margin-bottom: 20px; font-size: .9rem; }
+.modal-label { font-size: .73rem; font-weight: 700; color: var(--light); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.modal-tag {
+  background: var(--petal); color: var(--burgundy);
+  padding: 5px 14px; border-radius: 10px; font-size: .8rem;
+}
+.modal-cnt { font-size: .85rem; color: var(--mid); }
 
-  /* ── 푸터 ── */
-  footer {
-    background: var(--ink);
-    color: var(--warm-mid);
-    text-align: center;
-    padding: 28px 20px;
-    font-size: .8rem;
-    font-family: 'Arial', sans-serif;
-  }
-  footer strong { color: var(--gold); }
+/* ── 푸터 ── */
+footer {
+  background: var(--charcoal); color: #999;
+  text-align: center; padding: 32px 20px;
+  font-size: .8rem;
+}
+footer img { height: 28px; filter: brightness(0) invert(1); opacity: .5; margin-bottom: 12px; }
+footer p { margin-bottom: 4px; }
+footer strong { color: var(--gold); }
 
-  /* ── 모달 ── */
-  .modal-backdrop {
-    display: none; position: fixed; inset: 0;
-    background: rgba(44,32,22,.55); z-index: 200;
-    align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal {
-    background: var(--white); border-radius: var(--r-lg);
-    max-width: 520px; width: 100%; padding: 32px;
-    max-height: 80vh; overflow-y: auto;
-    box-shadow: 0 24px 60px rgba(0,0,0,.3);
-    position: relative;
-  }
-  .modal-close {
-    position: absolute; top: 16px; right: 16px;
-    background: var(--parchment); border: none;
-    width: 32px; height: 32px; border-radius: 50%;
-    font-size: 1rem; cursor: pointer; color: var(--ink-soft);
-  }
-  .modal-cat { color: var(--ember); font-size: .78rem; font-weight: bold; letter-spacing: .06em; margin-bottom: 8px; }
-  .modal-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 4px; }
-  .modal-author { color: var(--ink-soft); margin-bottom: 20px; }
-  .modal-section { font-size: .82rem; color: var(--ink-soft); margin-bottom: 6px; font-weight: bold; letter-spacing: .04em; text-transform: uppercase; }
-  .modal-lists { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-  .modal-list-tag {
-    background: var(--parchment); color: var(--bark);
-    padding: 4px 12px; border-radius: 12px; font-size: .8rem;
-  }
-  .modal-num { font-size: .85rem; color: var(--ink-soft); }
-
-  @media (max-width: 600px) {
-    .hero { padding: 40px 16px 36px; }
-    .hero-stats { gap: 20px; }
-    nav button { display: none; }
-    .book-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .book-card { padding: 14px; }
-  }
+@media (max-width: 640px) {
+  header { padding: 0 14px; }
+  .header-title { display: none; }
+  nav button { padding: 6px 10px; font-size: .78rem; }
+  .hero { padding: 36px 16px 32px; }
+  .hero-stats { flex-direction: column; gap: 0; }
+  .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.15); padding: 10px 20px; }
+  .book-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .book-card { padding: 12px; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">☕ 코지 <span>북클럽</span></div>
+  <a class="header-brand" href="#">
+    <img class="header-logo" src="coxi_logo.png" alt="COXI">
+    <span class="header-title">강남 독서모임 <strong>COXI(코지)</strong></span>
+  </a>
   <nav>
-    <button class="active" onclick="showSection('books')">책 목록</button>
-    <button onclick="showSection('overlaps')">중복 도서</button>
-    <button onclick="showSection('lists')">목록 정보</button>
+    <button class="active" onclick="showSection('books',this)">📚 책 목록</button>
+    <button onclick="showSection('overlaps',this)">🔁 중복 도서</button>
+    <button onclick="showSection('lists',this)">📋 목록 정보</button>
   </nav>
 </header>
 
+<!-- 히어로 -->
 <div class="hero">
-  <h1>어떤 책을 읽을까요?<br><em>코지 북클럽</em> 필독서 가이드</h1>
-  <p>8개의 세계적인 필독서 목록에서 엄선한 책들을 한눈에 볼 수 있습니다.</p>
+  <img class="hero-logo" src="coexist_logo.png" alt="COEXIST">
+  <h1>필독서 가이드</h1>
+  <p class="hero-slogan">
+    <em>함께 배우고, 함께 도전하며, 함께 변화하는 곳</em><br>코지(COEXIST)
+  </p>
   <div class="hero-stats" id="heroStats"></div>
 </div>
 
 <div class="app">
 
-  <!-- 책 목록 섹션 -->
+  <!-- 책 목록 -->
   <div id="sec-books">
-    <div class="search-bar">
-      <input type="search" id="searchInput" placeholder="책 제목, 저자 검색…" oninput="renderBooks()">
+    <div class="search-row">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="책 제목, 저자 검색…" oninput="renderBooks()">
+      </div>
       <span class="result-count" id="resultCount"></span>
     </div>
-    <div class="filter-row" id="listFilter"></div>
-    <div class="filter-row" id="catFilter"></div>
+    <div class="big-cat-row" id="bigCatRow"></div>
+    <div class="sub-cat-row" id="subCatRow"></div>
     <div class="book-grid" id="bookGrid"></div>
   </div>
 
-  <!-- 중복 도서 섹션 -->
+  <!-- 중복 도서 -->
   <div id="sec-overlaps" style="display:none">
-    <div class="tabs" id="overlapTabs"></div>
+    <div class="section-header">여러 목록에 동시에 오른 책</div>
+    <div class="overlap-filter-row" id="ovFilterRow"></div>
     <div class="overlap-table-wrap">
-      <table class="overlap-table" id="overlapTable">
+      <table class="overlap-table">
         <thead><tr>
-          <th>도서명</th><th>저자</th><th>등장 목록 수</th><th>수록 목록</th>
+          <th>도서명</th><th>저자</th><th>등장 수</th><th>수록 목록</th>
         </tr></thead>
         <tbody id="overlapBody"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- 목록 정보 섹션 -->
+  <!-- 목록 정보 -->
   <div id="sec-lists" style="display:none">
+    <div class="section-header">수록된 필독서 목록 안내</div>
     <div class="list-cards" id="listCards"></div>
   </div>
 
 </div>
 
-<!-- 책 상세 모달 -->
-<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
+<!-- 모달 -->
+<div class="backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-cat" id="mCat"></div>
+    <div class="modal-big" id="mBig"></div>
     <div class="modal-title" id="mTitle"></div>
     <div class="modal-author" id="mAuthor"></div>
-    <div class="modal-section">수록된 목록</div>
-    <div class="modal-lists" id="mLists"></div>
-    <div class="modal-num" id="mNum"></div>
+    <div class="modal-label">수록된 목록</div>
+    <div class="modal-tags" id="mTags"></div>
+    <div class="modal-cnt" id="mCnt"></div>
   </div>
 </div>
 
 <footer>
-  <strong>코지 북클럽</strong> · 8개 필독서 목록 통합 가이드 · 2025<br>
-  <small style="opacity:.6">서울대 권장도서 · 세인트존스 Great Books · Modern Library · BBC Big Read · TIME 100 · NYT 21C · 인문고전 커리큘럼 · 국내 베스트셀러</small>
+  <img src="coexist_logo.png" alt="COEXIST"><br>
+  <p><strong>강남 독서모임 COXI(코지)</strong> · 필독서 가이드</p>
+  <p style="margin-top:6px;font-size:.75rem">지성과 감성이 공존하는 사람들의 커뮤니티</p>
 </footer>
 
 <script src="data.js"></script>
 <script>
-// ── 상태 ──────────────────────────────────────────────────────────
-let activeList = 'all';
-let activeCats = new Set();
+// ── 상태 ─────────────────────────────────────────────────────────
+let activeBig = 'all';
+let activeSubs = new Set();
 let overlapMin = 2;
 
 // ── 데이터 가공 ───────────────────────────────────────────────────
-// 모든 책을 목록명 포함해서 flat하게
-const allBooks = [];
-const keyToLists = {};
-const keyToBook  = {};
-
-BOOK_DATA.lists.forEach(list => {
-  list.books.forEach(b => {
-    allBooks.push({ ...b, listName: list.name, listCode: list.code });
-    if (b.key) {
-      if (!keyToLists[b.key]) keyToLists[b.key] = new Set();
-      keyToLists[b.key].add(list.name);
-      if (!keyToBook[b.key])  keyToBook[b.key]  = b;
-    }
-  });
-});
-
-// 중복수 맵
+const BIG_CATS  = BOOK_DATA.big_cats;
 const overlapMap = {};
 BOOK_DATA.overlaps.forEach(o => { overlapMap[o.key] = o; });
 
-// 모든 카테고리
-const allCats = [...new Set(allBooks.map(b => b.category))].sort();
+// 중복 제거된 책 목록 (key 기준 첫 번째만, key 없으면 title+listCode)
+const uniqueBooks = [];
+const seenKeys = new Set();
+BOOK_DATA.lists.forEach(list => {
+  list.books.forEach(b => {
+    const uid = b.key || (list.code + '::' + b.title);
+    if (seenKeys.has(uid)) return;
+    seenKeys.add(uid);
+    uniqueBooks.push({ ...b, listName: list.name, listCode: list.code });
+  });
+});
 
-// ── 히어로 통계 ───────────────────────────────────────────────────
+// 대카테고리 → 소카테고리 목록
+const bigToSubs = {};
+BIG_CATS.forEach(bc => { bigToSubs[bc] = new Set(); });
+uniqueBooks.forEach(b => {
+  if (bigToSubs[b.big_category]) bigToSubs[b.big_category].add(b.category);
+});
+
+// ── 히어로 ───────────────────────────────────────────────────────
 document.getElementById('heroStats').innerHTML = `
   <div class="stat"><span class="stat-num">${BOOK_DATA.lists.length}</span><span class="stat-lbl">목록</span></div>
-  <div class="stat"><span class="stat-num">${allBooks.length}</span><span class="stat-lbl">수록 항목</span></div>
+  <div class="stat"><span class="stat-num">${uniqueBooks.length}</span><span class="stat-lbl">도서</span></div>
   <div class="stat"><span class="stat-num">${BOOK_DATA.overlaps.length}</span><span class="stat-lbl">중복 도서</span></div>
-  <div class="stat"><span class="stat-num">${BOOK_DATA.overlaps.filter(o=>o.count>=4).length}</span><span class="stat-lbl">4개 이상 등장</span></div>
+  <div class="stat"><span class="stat-num">${BOOK_DATA.overlaps.filter(o=>o.count>=4).length}</span><span class="stat-lbl">4개↑ 등장</span></div>
 `;
 
-// ── 필터 렌더 ─────────────────────────────────────────────────────
-function renderFilters() {
-  // 목록 필터
-  const lf = document.getElementById('listFilter');
-  lf.innerHTML = `<button class="chip ${activeList==='all'?'on':''}" onclick="setList('all')">전체 목록</button>`
-    + BOOK_DATA.lists.map(l =>
-        `<button class="chip ${activeList===l.code?'on':''}" onclick="setList('${l.code}')">${l.name}</button>`
-      ).join('');
-
-  // 카테고리 필터
-  const cf = document.getElementById('catFilter');
-  cf.innerHTML = allCats.map(c =>
-    `<button class="chip ${activeCats.has(c)?'on':''}" onclick="toggleCat('${c}')">${c}</button>`
+// ── 대카테고리 버튼 ───────────────────────────────────────────────
+function renderBigCats() {
+  const row = document.getElementById('bigCatRow');
+  const btns = [['all','전체']].concat(BIG_CATS.map(c=>[c,c]));
+  row.innerHTML = btns.map(([val,lbl]) =>
+    `<button class="big-cat-btn ${activeBig===val?'active':''}"
+      onclick="setBig('${val}')">${lbl}</button>`
   ).join('');
 }
 
-function setList(code) { activeList = code; renderFilters(); renderBooks(); }
-function toggleCat(c) {
-  activeCats.has(c) ? activeCats.delete(c) : activeCats.add(c);
-  renderFilters(); renderBooks();
+function setBig(val) {
+  activeBig = val;
+  activeSubs.clear();
+  renderBigCats();
+  renderSubCats();
+  renderBooks();
+}
+
+// ── 소카테고리 칩 ─────────────────────────────────────────────────
+function renderSubCats() {
+  const row = document.getElementById('subCatRow');
+  if (activeBig === 'all') { row.innerHTML = ''; return; }
+  const subs = [...(bigToSubs[activeBig] || [])].sort();
+  row.innerHTML = subs.map(s =>
+    `<button class="sub-chip ${activeSubs.has(s)?'on':''}"
+      onclick="toggleSub('${s}')">${s}</button>`
+  ).join('');
+}
+
+function toggleSub(s) {
+  activeSubs.has(s) ? activeSubs.delete(s) : activeSubs.add(s);
+  renderSubCats();
+  renderBooks();
 }
 
 // ── 책 렌더 ──────────────────────────────────────────────────────
 function renderBooks() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  let filtered = allBooks.filter(b => {
-    if (activeList !== 'all' && b.listCode !== activeList) return false;
-    if (activeCats.size > 0 && !activeCats.has(b.category)) return false;
+  let filtered = uniqueBooks.filter(b => {
+    if (activeBig !== 'all' && b.big_category !== activeBig) return false;
+    if (activeSubs.size > 0 && !activeSubs.has(b.category)) return false;
     if (q && !b.title.toLowerCase().includes(q) && !b.author.toLowerCase().includes(q)) return false;
     return true;
   });
 
-  // 중복 도서는 첫 번째만 (목록 전체 볼 때)
-  let shown = filtered;
-  if (activeList === 'all' && !q && activeCats.size === 0) {
-    const seen = new Set();
-    shown = filtered.filter(b => {
-      const id = b.key || (b.listCode + b.title);
-      if (seen.has(id)) return false;
-      seen.add(id); return true;
-    });
-  }
-
-  document.getElementById('resultCount').textContent = `${shown.length}권`;
+  document.getElementById('resultCount').textContent = `${filtered.length}권`;
 
   const grid = document.getElementById('bookGrid');
-  if (shown.length === 0) {
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
-      <span class="empty-icon">🔍</span>검색 결과가 없습니다
-    </div>`;
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty"><span>🔍</span>검색 결과가 없습니다</div>`;
     return;
   }
 
-  grid.innerHTML = shown.slice(0, 200).map(b => {
+  grid.innerHTML = filtered.slice(0, 300).map(b => {
     const ov = b.key ? overlapMap[b.key] : null;
     const cnt = ov ? ov.count : 0;
-    const badge = cnt >= 4
-      ? `<div class="overlap-count gold">${cnt}</div>`
-      : cnt >= 2 ? `<div class="overlap-count">${cnt}</div>` : '';
-    const lists = ov ? ov.lists.slice(0,3).map(l =>
-      `<span class="badge ${cnt>=4?'hot':''}">${l.replace(/100선|Great Books| 통합| 커리큘럼.*/g,'').trim()}</span>`
-    ).join('') : '';
-    return `<div class="book-card" onclick="openModal(${JSON.stringify(b).replace(/"/g,'&quot;')})">
-      ${badge}
-      <div class="book-cat">${b.category}</div>
+    const pill = cnt >= 2
+      ? `<div class="overlap-pill ${cnt>=4?'gold':''}">${cnt}</div>` : '';
+    const badges = ov
+      ? ov.lists.slice(0,2).map(l =>
+          `<span class="badge ${cnt>=4?'hot':''}">${l.replace(/100선|Great Books| 통합| 커리큘럼.*/g,'').trim()}</span>`
+        ).join('') + (ov.count>2 ? `<span class="badge">+${ov.count-2}</span>` : '')
+      : '';
+    const safeB = JSON.stringify(b).replace(/"/g,'&quot;');
+    return `<div class="book-card" onclick='openModal(${safeB})'>
+      ${pill}
+      <div class="book-big-cat">${b.big_category}</div>
+      <div class="book-sub-cat">${b.category}</div>
       <div class="book-title">${b.title}</div>
       <div class="book-author">${b.author}</div>
-      ${ov ? `<div class="overlap-badges">${lists}${ov.count>3?`<span class="badge">+${ov.count-3}</span>`:''}</div>` : ''}
+      ${badges ? `<div class="overlap-badges">${badges}</div>` : ''}
     </div>`;
   }).join('');
 }
 
-// ── 중복 도서 렌더 ────────────────────────────────────────────────
-function renderOverlapTabs() {
-  const tabs = document.getElementById('overlapTabs');
-  [2,3,4].forEach(n => {
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (overlapMin===n?' active':'');
+// ── 중복 도서 ─────────────────────────────────────────────────────
+function renderOvFilter() {
+  const row = document.getElementById('ovFilterRow');
+  row.innerHTML = [2,3,4].map(n => {
     const cnt = BOOK_DATA.overlaps.filter(o=>o.count>=n).length;
-    btn.textContent = `${n}개 이상 목록 (${cnt}권)`;
-    btn.onclick = () => { overlapMin=n; renderOverlapTabs(); renderOverlapBody(); };
-    tabs.appendChild(btn);
-  });
+    return `<button class="ov-btn ${overlapMin===n?'active':''}"
+      onclick="setOvMin(${n})">${n}개 이상 목록 (${cnt}권)</button>`;
+  }).join('');
 }
 
-function renderOverlapBody() {
-  document.querySelectorAll('.tab-btn').forEach((b,i) => {
-    b.className = 'tab-btn' + (overlapMin===i+2?' active':'');
-  });
-  const data = BOOK_DATA.overlaps.filter(o=>o.count>=overlapMin);
+function setOvMin(n) {
+  overlapMin = n;
+  renderOvFilter();
+  renderOvBody();
+}
+
+function renderOvBody() {
+  const data = BOOK_DATA.overlaps.filter(o => o.count >= overlapMin);
   document.getElementById('overlapBody').innerHTML = data.map(o => `
     <tr>
       <td><strong>${o.title}</strong></td>
-      <td style="color:var(--ink-soft)">${o.author}</td>
-      <td><span class="count-pill ${o.count>=4?'c4':''}">${o.count}</span></td>
+      <td style="color:var(--mid)">${o.author}</td>
+      <td><span class="cnt-pill ${o.count>=4?'g4':''}">${o.count}</span></td>
       <td>${o.lists.map(l=>`<span class="list-tag">${l}</span>`).join('')}</td>
     </tr>`).join('');
 }
 
-// ── 목록 정보 렌더 ────────────────────────────────────────────────
+// ── 목록 정보 ─────────────────────────────────────────────────────
 function renderListCards() {
-  const circled = '①②③④⑤⑥⑦⑧⑨⑩';
+  const idx = '①②③④⑤⑥⑦⑧⑨⑩';
   document.getElementById('listCards').innerHTML = BOOK_DATA.lists.map((l,i) => `
     <div class="list-card">
-      <div class="list-card-idx">${circled[i]}</div>
-      <div class="list-card-name">${l.name}</div>
-      <div class="list-card-meta">
+      <div class="list-idx">${idx[i]}</div>
+      <div class="list-name">${l.name}</div>
+      <div class="list-meta">
         <strong>연도</strong> ${l.year}<br>
         <strong>선정</strong> ${l.selector}<br>
         <strong>범위</strong> ${l.scope}<br>
@@ -512,38 +571,36 @@ function renderListCards() {
 }
 
 // ── 섹션 전환 ─────────────────────────────────────────────────────
-function showSection(sec) {
-  ['books','overlaps','lists'].forEach(s => {
-    document.getElementById('sec-'+s).style.display = s===sec ? '' : 'none';
-  });
-  document.querySelectorAll('nav button').forEach((b,i) => {
-    b.className = ['books','overlaps','lists'][i]===sec ? 'active' : '';
-  });
+function showSection(sec, btn) {
+  ['books','overlaps','lists'].forEach(s =>
+    document.getElementById('sec-'+s).style.display = s===sec?'':'none');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 }
 
 // ── 모달 ──────────────────────────────────────────────────────────
 function openModal(b) {
   const ov = b.key ? overlapMap[b.key] : null;
-  document.getElementById('mCat').textContent    = b.category;
+  document.getElementById('mBig').textContent    = b.big_category + ' · ' + b.category;
   document.getElementById('mTitle').textContent  = b.title;
   document.getElementById('mAuthor').textContent = b.author;
-  document.getElementById('mLists').innerHTML    = ov
-    ? ov.lists.map(l=>`<span class="modal-list-tag">${l}</span>`).join('')
-    : `<span class="modal-list-tag">${b.listName}</span>`;
-  document.getElementById('mNum').textContent    = ov
+  document.getElementById('mTags').innerHTML     = (ov ? ov.lists : [b.listName])
+    .map(l=>`<span class="modal-tag">${l}</span>`).join('');
+  document.getElementById('mCnt').textContent    = ov
     ? `총 ${ov.count}개 목록에 수록된 책입니다.`
     : '1개 목록에 수록된 책입니다.';
-  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('backdrop').classList.add('open');
 }
 function closeModal() {
-  document.getElementById('modalBackdrop').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
 }
 
 // ── 초기화 ───────────────────────────────────────────────────────
-renderFilters();
+renderBigCats();
+renderSubCats();
 renderBooks();
-renderOverlapTabs();
-renderOverlapBody();
+renderOvFilter();
+renderOvBody();
 renderListCards();
 </script>
 </body>
