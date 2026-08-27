@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COXI 북클럽 — 필독서 가이드</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_16.png">
+<link rel="shortcut icon" href="favicon.ico">
 <style>
 :root {
   --burgundy:   #A50034;
@@ -68,6 +71,15 @@ nav button:hover { background: var(--petal); color: var(--burgundy); }
 nav button.active {
   background: var(--burgundy); color: #fff; font-weight: 700;
 }
+.nav-kakao {
+  display: inline-flex; align-items: center;
+  background: #FEE500; color: #3A1D1D;
+  font: inherit; font-size: .85rem; font-weight: 700;
+  padding: 7px 16px; border-radius: 6px;
+  text-decoration: none; transition: all .18s;
+  margin-left: 4px;
+}
+.nav-kakao:hover { background: #F5D800; transform: translateY(-1px); }
 
 /* ── 히어로 ── */
 .hero {
@@ -79,7 +91,7 @@ nav button.active {
   position: relative; overflow: hidden;
 }
 .hero-logo {
-  height: 88px; width: auto;
+  height: 176px; width: auto;
   margin-bottom: 18px;
   filter: brightness(0) invert(1);
   opacity: .92;
@@ -331,11 +343,12 @@ nav button.active {
 
 /* ── 푸터 ── */
 footer {
-  background: var(--charcoal); color: #999;
+  background: #1A0008;
+  color: var(--rose);
   text-align: center; padding: 32px 20px;
   font-size: .8rem;
 }
-footer img { height: 28px; filter: brightness(0) invert(1); opacity: .5; margin-bottom: 12px; }
+footer img { height: 28px; filter: brightness(0) invert(1); opacity: .4; margin-bottom: 12px; }
 footer p { margin-bottom: 4px; }
 footer strong { color: var(--gold); }
 
@@ -365,6 +378,8 @@ footer strong { color: var(--gold); }
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><circle cx="9" cy="9" r="6"/><circle cx="15" cy="15" r="6"/></svg>중복 도서</button>
     <button onclick="showSection('lists',this)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>목록 정보</button>
+    <a href="https://open.kakao.com/o/gwko99Gc" target="_blank" class="nav-kakao">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-2px;margin-right:5px"><path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.667 1.556 5.012 3.938 6.438L5 21l4.563-2.438A11.3 11.3 0 0 0 12 18c5.523 0 10-3.477 10-7.5S17.523 3 12 3z"/></svg>코지 채팅방</a>
   </nav>
 </header>
 
@@ -432,7 +447,7 @@ footer strong { color: var(--gold); }
 <footer>
   <img src="coexist_logo.png" alt="COEXIST"><br>
   <p><strong>강남 독서모임 COXI(코지)</strong> · 필독서 가이드</p>
-  <p style="margin-top:6px;font-size:.75rem">지성과 감성이 공존하는 사람들의 커뮤니티</p>
+  <p style="margin-top:6px;font-size:.75rem;color:#C4748A">지성과 감성이 공존하는 사람들의 커뮤니티</p>
 </footer>
 
 <script src="data.js"></script>
