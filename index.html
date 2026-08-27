@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COXI 북클럽 — 필독서 가이드</title>
+<meta property="og:title" content="강남 독서모임 COXI · 필독서 가이드">
+<meta property="og:description" content="강남 독서모임 COXI 추천도서목록">
+<meta property="og:image" content="coexist_logo.png">
+<meta name="theme-color" content="#A50034">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon_32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon_16.png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -73,13 +77,13 @@ nav button.active {
 }
 .nav-kakao {
   display: inline-flex; align-items: center;
-  background: #FEE500; color: #3A1D1D;
-  font: inherit; font-size: .85rem; font-weight: 700;
-  padding: 7px 16px; border-radius: 6px;
+  background: var(--burgundy-d); color: #fff;
+  font: inherit; font-size: .78rem; font-weight: 700;
+  padding: 7px 14px; border-radius: 6px;
   text-decoration: none; transition: all .18s;
-  margin-left: 4px;
+  margin-left: 4px; white-space: nowrap;
 }
-.nav-kakao:hover { background: #F5D800; transform: translateY(-1px); }
+.nav-kakao:hover { background: var(--burgundy); }
 
 /* ── 히어로 ── */
 .hero {
@@ -343,24 +347,62 @@ nav button.active {
 
 /* ── 푸터 ── */
 footer {
-  background: #1A0008;
-  color: var(--rose);
-  text-align: center; padding: 32px 20px;
+  background: var(--burgundy);
+  background-image: linear-gradient(135deg, var(--burgundy-d) 0%, var(--burgundy) 60%, var(--burgundy-l) 100%);
+  color: rgba(255,255,255,.8);
+  text-align: center; padding: 40px 20px;
   font-size: .8rem;
 }
-footer img { height: 28px; filter: brightness(0) invert(1); opacity: .4; margin-bottom: 12px; }
+footer img { margin-bottom: 8px; }
 footer p { margin-bottom: 4px; }
-footer strong { color: var(--gold); }
+footer strong { color: var(--gold-l); font-weight: 700; }
 
 @media (max-width: 640px) {
-  header { padding: 0 14px; }
+  header {
+    padding: 0 10px;
+    height: auto; min-height: 52px;
+    flex-wrap: nowrap; overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+  }
+  header::-webkit-scrollbar { display: none; }
+  .header-logo { height: 24px; flex-shrink: 0; }
   .header-title { display: none; }
-  nav button { padding: 6px 10px; font-size: .78rem; }
-  .hero { padding: 36px 16px 32px; }
-  .hero-stats { flex-direction: column; gap: 0; }
-  .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.15); padding: 10px 20px; }
+  nav { gap: 2px; flex-shrink: 0; }
+  nav button {
+    padding: 5px 8px; font-size: .72rem;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  nav button svg { display: none; }
+  .nav-kakao { padding: 5px 8px; font-size: .72rem; margin-left: 2px; }
+  .nav-kakao svg { display: none; }
+  .hero { padding: 32px 16px 28px; }
+  .hero-logo {
+    height: auto; width: 70%; max-width: 260px;
+    margin-bottom: 14px;
+  }
+  .hero h1 { font-size: 1.4rem; }
+  .hero-slogan { font-size: .85rem; margin-bottom: 24px; }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px; border-radius: 10px;
+    background: rgba(255,255,255,.15);
+    overflow: hidden;
+    width: 100%; max-width: 320px;
+    margin: 0 auto;
+  }
+  .stat {
+    border-right: none;
+    border-bottom: none;
+    padding: 12px 8px;
+    background: rgba(255,255,255,.08);
+  }
+  .stat-num { font-size: 1.4rem; }
+  .stat-lbl { font-size: .65rem; }
   .book-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .book-card { padding: 12px; }
+  .app { padding: 20px 14px 60px; }
 }
 </style>
 </head>
@@ -445,9 +487,11 @@ footer strong { color: var(--gold); }
 </div>
 
 <footer>
-  <img src="coexist_logo.png" alt="COEXIST"><br>
+  <img src="coexist_logo.png" alt="COEXIST" style="height:36px;filter:brightness(0) invert(1);opacity:.9;margin-bottom:8px;"><br>
+  <img src="coxi_logo.png" alt="COXI" style="height:18px;filter:brightness(0) invert(1);opacity:.6;margin-bottom:10px;"><br>
+  <p style="font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:4px;">강남 독서모임 COXI · 추천도서목록</p>
   <p><strong>강남 독서모임 COXI(코지)</strong> · 필독서 가이드</p>
-  <p style="margin-top:6px;font-size:.75rem;color:#C4748A">지성과 감성이 공존하는 사람들의 커뮤니티</p>
+  <p style="margin-top:6px;font-size:.75rem;color:rgba(255,255,255,.65)">지성과 감성이 공존하는 사람들의 커뮤니티</p>
 </footer>
 
 <script src="data.js"></script>
