@@ -106,7 +106,7 @@ nav button.active {
 .stat:last-child { border-right: none; }
 .stat-num {
   display: block; font-size: 1.7rem; font-weight: 800;
-  color: var(--gold-l); line-height: 1; margin-bottom: 2px;
+  color: #FFFFFF; line-height: 1; margin-bottom: 2px;
 }
 .stat-lbl { font-size: .72rem; opacity: .75; letter-spacing: .06em; text-transform: uppercase; }
 
@@ -435,6 +435,9 @@ BOOK_DATA.lists.forEach(list => {
     uniqueBooks.push({ ...b, listName: list.name, listCode: list.code });
   });
 });
+
+// 가나다순 정렬
+uniqueBooks.sort((a, b) => a.title.localeCompare(b.title, 'ko'));
 
 // 대카테고리 → 소카테고리 목록
 const bigToSubs = {};
