@@ -263,14 +263,33 @@ nav button.active {
 }
 .list-card:hover { box-shadow: 0 6px 22px var(--shadow); border-color: var(--rose); }
 .list-idx {
-  font-size: 2rem; font-weight: 900; color: var(--border);
+  font-size: 2rem; font-weight: 900; color: var(--burgundy);
   line-height: 1; margin-bottom: 8px;
 }
 .list-name { font-size: .97rem; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
 .list-meta { font-size: .8rem; color: var(--mid); line-height: 1.7; }
 .list-meta strong { color: var(--burgundy); }
 
-/* ── 빈 상태 ── */
+/* ── 목록 카드 책 목록 펼치기 ── */
+.list-card { cursor: pointer; }
+.list-card-books {
+  display: none; margin-top: 14px;
+  border-top: 1px solid var(--border); padding-top: 12px;
+}
+.list-card-books.open { display: block; }
+.list-card-books table {
+  width: 100%; border-collapse: collapse; font-size: .78rem;
+}
+.list-card-books td {
+  padding: 4px 6px; border-bottom: 1px solid var(--border);
+  color: var(--mid); vertical-align: top;
+}
+.list-card-books td:first-child { color: var(--charcoal); font-weight: 600; width: 60%; }
+.list-card-books tr:last-child td { border-bottom: none; }
+.list-toggle {
+  font-size: .75rem; color: var(--burgundy); font-weight: 600;
+  margin-top: 10px; display: inline-block;
+}
 .empty {
   grid-column: 1/-1; text-align: center;
   padding: 60px 20px; color: var(--mid);
@@ -339,9 +358,12 @@ footer strong { color: var(--gold); }
     <span class="header-title">강남 독서모임 <strong>COXI(코지)</strong></span>
   </a>
   <nav>
-    <button class="active" onclick="showSection('books',this)">📚 책 목록</button>
-    <button onclick="showSection('overlaps',this)">🔁 중복 도서</button>
-    <button onclick="showSection('lists',this)">📋 목록 정보</button>
+    <button class="active" onclick="showSection('books',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>책 목록</button>
+    <button onclick="showSection('overlaps',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><circle cx="9" cy="9" r="6"/><circle cx="15" cy="15" r="6"/></svg>중복 도서</button>
+    <button onclick="showSection('lists',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>목록 정보</button>
   </nav>
 </header>
 
@@ -559,8 +581,11 @@ function renderOvBody() {
 // ── 목록 정보 ─────────────────────────────────────────────────────
 function renderListCards() {
   const idx = '①②③④⑤⑥⑦⑧⑨⑩';
-  document.getElementById('listCards').innerHTML = BOOK_DATA.lists.map((l,i) => `
-    <div class="list-card">
+  document.getElementById('listCards').innerHTML = BOOK_DATA.lists.map((l,i) => {
+    const bookRows = l.books.slice(0,999).map(b =>
+      `<tr><td>${b.title}</td><td>${b.author}</td></tr>`).join('');
+    return `
+    <div class="list-card" onclick="toggleListBooks(this)">
       <div class="list-idx">${idx[i]}</div>
       <div class="list-name">${l.name}</div>
       <div class="list-meta">
@@ -570,7 +595,19 @@ function renderListCards() {
         <strong>방식</strong> ${l.method}<br>
         <strong>수록</strong> ${l.books.length}권
       </div>
-    </div>`).join('');
+      <span class="list-toggle">▼ 책 목록 보기</span>
+      <div class="list-card-books">
+        <table><tbody>${bookRows}</tbody></table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleListBooks(card) {
+  const panel = card.querySelector('.list-card-books');
+  const toggle = card.querySelector('.list-toggle');
+  const isOpen = panel.classList.toggle('open');
+  toggle.textContent = isOpen ? '▲ 접기' : '▼ 책 목록 보기';
 }
 
 // ── 섹션 전환 ─────────────────────────────────────────────────────
