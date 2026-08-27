@@ -284,7 +284,8 @@ nav button.active {
   padding: 4px 6px; border-bottom: 1px solid var(--border);
   color: var(--mid); vertical-align: top;
 }
-.list-card-books td:first-child { color: var(--charcoal); font-weight: 600; width: 60%; }
+.list-card-books td:nth-child(2) { color: var(--charcoal); font-weight: 600; }
+.list-card-books td:nth-child(4) { white-space: nowrap; }
 .list-card-books tr:last-child td { border-bottom: none; }
 .list-toggle {
   font-size: .75rem; color: var(--burgundy); font-weight: 600;
@@ -582,8 +583,20 @@ function renderOvBody() {
 function renderListCards() {
   const idx = '①②③④⑤⑥⑦⑧⑨⑩';
   document.getElementById('listCards').innerHTML = BOOK_DATA.lists.map((l,i) => {
-    const bookRows = l.books.slice(0,999).map(b =>
-      `<tr><td>${b.title}</td><td>${b.author}</td></tr>`).join('');
+    // 장르별 그룹핑
+    const groups = {};
+    l.books.forEach(b => {
+      if (!groups[b.category]) groups[b.category] = [];
+      groups[b.category].push(b);
+    });
+    let rowNum = 1;
+    const bookRows = Object.entries(groups).map(([cat, books]) => {
+      const header = `<tr><td colspan="4" style="background:var(--petal);color:var(--burgundy);font-weight:700;font-size:.78rem;padding:6px 8px;border-bottom:1.5px solid var(--border)">${cat} (${books.length}권)</td></tr>`;
+      const rows = books.map(b =>
+        `<tr><td style="color:var(--burgundy);font-weight:700;width:28px;text-align:center">${rowNum++}</td><td>${b.title}</td><td>${b.author}</td><td style="color:var(--rose);font-size:.72rem">${b.category}</td></tr>`
+      ).join('');
+      return header + rows;
+    }).join('');
     return `
     <div class="list-card" onclick="toggleListBooks(this)">
       <div class="list-idx">${idx[i]}</div>
@@ -597,7 +610,15 @@ function renderListCards() {
       </div>
       <span class="list-toggle">▼ 책 목록 보기</span>
       <div class="list-card-books">
-        <table><tbody>${bookRows}</tbody></table>
+        <table>
+          <thead><tr>
+            <th style="color:var(--burgundy);font-size:.72rem;padding:4px 6px;border-bottom:1.5px solid var(--burgundy);text-align:center">#</th>
+            <th style="color:var(--burgundy);font-size:.72rem;padding:4px 6px;border-bottom:1.5px solid var(--burgundy)">도서명</th>
+            <th style="color:var(--burgundy);font-size:.72rem;padding:4px 6px;border-bottom:1.5px solid var(--burgundy)">저자</th>
+            <th style="color:var(--burgundy);font-size:.72rem;padding:4px 6px;border-bottom:1.5px solid var(--burgundy)">장르</th>
+          </tr></thead>
+          <tbody>${bookRows}</tbody>
+        </table>
       </div>
     </div>`;
   }).join('');
