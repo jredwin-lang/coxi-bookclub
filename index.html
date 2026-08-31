@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COXI 북클럽 — 필독서 가이드</title>
 <meta property="og:title" content="강남 독서모임 COXI · 필독서 가이드">
-<meta property="og:description" content="강남 독서모임 COXI 추천도서목록">
-<meta property="og:image" content="coexist_logo.png">
+<meta property="og:description" content="지성과 감성이 공존하는 사람들의 커뮤니티 · 8개 필독서 목록 617권 통합 가이드">
+<meta property="og:image" content="https://jredwin-lang.github.io/coxi-bookclub/og_image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jredwin-lang.github.io/coxi-bookclub">
 <meta name="theme-color" content="#A50034">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon_32.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon_16.png">
 <link rel="shortcut icon" href="favicon.ico">
 <style>
@@ -41,6 +44,19 @@ body {
 }
 
 /* ── 헤더 ── */
+.header-sub {
+  display: none;
+  font-size: .62rem; color: var(--mid);
+  letter-spacing: .02em; line-height: 1.2;
+  margin-top: 2px;
+  /* 로고 너비에 맞게 양끝 정렬 */
+  display: none;
+  justify-content: space-between;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .header-sub { display: flex; }
+}
 header {
   background: #fff;
   border-bottom: 2px solid var(--burgundy);
@@ -91,13 +107,13 @@ nav button.active {
   background: var(--burgundy);
   background-image: linear-gradient(135deg, var(--burgundy-d) 0%, var(--burgundy) 60%, var(--burgundy-l) 100%);
   color: #fff;
-  padding: 56px 28px 48px;
+  padding: 28px 28px 28px;
   text-align: center;
   position: relative; overflow: hidden;
 }
 .hero-logo {
   height: 176px; width: auto;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   filter: brightness(0) invert(1);
   opacity: .92;
 }
@@ -111,6 +127,10 @@ nav button.active {
   margin-bottom: 36px; letter-spacing: .01em;
 }
 .hero-slogan em { color: var(--gold-l); font-style: normal; font-weight: 600; }
+.hero-desc {
+  font-size: .82rem; opacity: .72; line-height: 1.8;
+  margin-bottom: 24px; letter-spacing: .01em;
+}
 .hero-stats {
   display: inline-flex; gap: 0;
   background: rgba(255,255,255,.12);
@@ -379,10 +399,10 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   nav button svg { display: none; }
   .nav-kakao { padding: 5px 8px; font-size: .72rem; margin-left: 2px; }
   .nav-kakao svg { display: none; }
-  .hero { padding: 32px 16px 28px; }
+  .hero { padding: 16px 16px 18px; }
   .hero-logo {
     height: auto; width: 70%; max-width: 260px;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
   .hero h1 { font-size: 1.4rem; }
   .hero-slogan { font-size: .85rem; margin-bottom: 24px; }
@@ -415,7 +435,10 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 
 <header>
   <a class="header-brand" href="#">
-    <img class="header-logo" src="coxi_logo.png" alt="COXI">
+    <div>
+      <img class="header-logo" src="coxi_logo.png" alt="COXI">
+      <div class="header-sub"><span>독</span><span>서</span><span>모</span><span>임</span><span>&nbsp;</span><span>코</span><span>지</span></div>
+    </div>
     <span class="header-title">강남 독서모임 <strong>COXI(코지)</strong></span>
   </a>
   <nav>
@@ -437,6 +460,7 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   <p class="hero-slogan">
     <em>함께 배우고, 함께 도전하며, 함께 변화하는 곳</em><br>코지(COEXIST)
   </p>
+  <p class="hero-desc">서울대 권장도서 · 세인트존스 Great Books · Modern Library · BBC Big Read<br>TIME 100 · NYT 21세기 · 인문고전 커리큘럼 · 국내 베스트셀러<br>8개 필독서 목록을 한눈에 비교하고 탐색하세요.</p>
   <div class="hero-stats" id="heroStats"></div>
 </div>
 
