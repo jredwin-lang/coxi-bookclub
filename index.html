@@ -107,13 +107,13 @@ nav button.active {
   background: var(--burgundy);
   background-image: linear-gradient(135deg, var(--burgundy-d) 0%, var(--burgundy) 60%, var(--burgundy-l) 100%);
   color: #fff;
-  padding: 28px 28px 28px;
+  padding: 14px 28px 14px;
   text-align: center;
   position: relative; overflow: hidden;
 }
 .hero-logo {
   height: 176px; width: auto;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   filter: brightness(0) invert(1);
   opacity: .92;
 }
@@ -399,10 +399,10 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   nav button svg { display: none; }
   .nav-kakao { padding: 5px 8px; font-size: .72rem; margin-left: 2px; }
   .nav-kakao svg { display: none; }
-  .hero { padding: 16px 16px 18px; }
+  .hero { padding: 8px 16px 10px; }
   .hero-logo {
     height: auto; width: 70%; max-width: 260px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   .hero h1 { font-size: 1.4rem; }
   .hero-slogan { font-size: .85rem; margin-bottom: 24px; }
@@ -721,6 +721,8 @@ function toggleListBooks(card) {
 function showSection(sec, btn) {
   ['books','overlaps','lists'].forEach(s =>
     document.getElementById('sec-'+s).style.display = s===sec?'':'none');
+  // 히어로는 책 목록 탭일 때만 표시
+  document.querySelector('.hero').style.display = sec==='books' ? '' : 'none';
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
