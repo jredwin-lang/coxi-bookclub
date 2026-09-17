@@ -380,22 +380,23 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 
 @media (max-width: 640px) {
   header {
-    padding: 0 8px;
+    padding: 0 6px;
     height: auto; min-height: 48px;
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 0px;
     justify-content: space-between;
   }
+  .header-brand { gap: 4px; }
   .header-logo { height: 22px; flex-shrink: 0; }
   .header-sub { font-size: .52rem; }
   .header-title { display: none; }
-  nav { gap: 1px; flex-shrink: 0; margin-left: 0; }
+  nav { gap: 0px; flex-shrink: 0; margin-left: 0; }
   nav button {
-    padding: 5px 7px; font-size: .70rem;
+    padding: 5px 6px; font-size: .68rem;
     white-space: nowrap; flex-shrink: 0;
   }
   nav button svg { display: none; }
-  .nav-kakao { padding: 5px 7px; font-size: .70rem; margin-left: 0; }
+  .nav-kakao { padding: 5px 6px; font-size: .68rem; margin-left: 0; }
   .nav-kakao svg { display: none; }
   .hero { padding: 8px 16px 10px; }
   .hero-logo {
@@ -437,7 +438,6 @@ footer strong { color: var(--gold-l); font-weight: 700; }
       <img class="header-logo" src="coxi_logo.png" alt="COXI">
       <div class="header-sub">강남 독서모임 <strong style="color:var(--burgundy)">코지</strong></div>
     </div>
-    <span class="header-title">강남 독서모임 <strong>코지</strong></span>
   </a>
   <nav>
     <button class="active" onclick="showSection('books',this)">
