@@ -41,21 +41,16 @@ body {
   font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif;
   font-size: 14px;
   line-height: 1.7;
+  min-width: 320px;
 }
 
 /* ── 헤더 ── */
 .header-sub {
-  display: none;
-  font-size: .62rem; color: var(--mid);
+  font-size: .58rem; color: var(--mid);
   letter-spacing: .02em; line-height: 1.2;
   margin-top: 2px;
-  /* 로고 너비에 맞게 양끝 정렬 */
-  display: none;
-  justify-content: space-between;
-  width: 100%;
-}
-@media (max-width: 640px) {
-  .header-sub { display: flex; }
+  text-align: center;
+  white-space: nowrap;
 }
 header {
   background: #fff;
@@ -67,10 +62,12 @@ header {
   height: 60px;
   position: sticky; top: 0; z-index: 200;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  min-width: 0;
 }
 .header-brand {
   display: flex; align-items: center; gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 .header-logo { height: 32px; width: auto; }
 .header-title {
@@ -80,12 +77,13 @@ header {
   white-space: nowrap;
 }
 .header-title strong { color: var(--burgundy); font-weight: 700; }
-nav { display: flex; gap: 4px; margin-left: auto; }
+nav { display: flex; gap: 4px; margin-left: auto; flex-shrink: 0; }
 nav button {
   background: none; border: none;
   color: var(--mid); font: inherit; font-size: .85rem;
   padding: 7px 16px; border-radius: 6px; cursor: pointer;
   transition: all .18s; font-weight: 500;
+  white-space: nowrap;
 }
 nav button:hover { background: var(--petal); color: var(--burgundy); }
 nav button.active {
@@ -382,22 +380,22 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 
 @media (max-width: 640px) {
   header {
-    padding: 0 10px;
-    height: auto; min-height: 52px;
-    flex-wrap: nowrap; overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    gap: 6px;
+    padding: 0 8px;
+    height: auto; min-height: 48px;
+    flex-wrap: nowrap;
+    gap: 4px;
+    justify-content: space-between;
   }
-  header::-webkit-scrollbar { display: none; }
-  .header-logo { height: 24px; flex-shrink: 0; }
+  .header-logo { height: 22px; flex-shrink: 0; }
+  .header-sub { font-size: .52rem; }
   .header-title { display: none; }
-  nav { gap: 2px; flex-shrink: 0; }
+  nav { gap: 1px; flex-shrink: 0; margin-left: 0; }
   nav button {
-    padding: 5px 8px; font-size: .72rem;
+    padding: 5px 7px; font-size: .70rem;
     white-space: nowrap; flex-shrink: 0;
   }
   nav button svg { display: none; }
-  .nav-kakao { padding: 5px 8px; font-size: .72rem; margin-left: 2px; }
+  .nav-kakao { padding: 5px 7px; font-size: .70rem; margin-left: 0; }
   .nav-kakao svg { display: none; }
   .hero { padding: 8px 16px 10px; }
   .hero-logo {
@@ -437,9 +435,9 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   <a class="header-brand" href="#">
     <div>
       <img class="header-logo" src="coxi_logo.png" alt="COXI">
-      <div class="header-sub"><span>독</span><span>서</span><span>모</span><span>임</span><span>&nbsp;</span><span>코</span><span>지</span></div>
+      <div class="header-sub">강남 독서모임 <strong style="color:var(--burgundy)">코지</strong></div>
     </div>
-    <span class="header-title">강남 독서모임 <strong>COXI(코지)</strong></span>
+    <span class="header-title">강남 독서모임 <strong>코지</strong></span>
   </a>
   <nav>
     <button class="active" onclick="showSection('books',this)">
@@ -516,7 +514,7 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 </div>
 
 <footer>
-  <img src="coexist_logo.png" alt="COEXIST" style="height:72px;filter:brightness(0) invert(1);opacity:.9;margin-bottom:16px;"><br>
+  <img src="coexist_logo.png" alt="COEXIST" style="height:36px;filter:brightness(0) invert(1);opacity:.9;margin-bottom:14px;"><br>
   <p><strong>강남 독서모임 COXI(코지)</strong> · 필독서 가이드</p>
   <p style="margin-top:6px;font-size:.75rem;color:rgba(255,255,255,.65)">지성과 감성이 공존하는 사람들의 커뮤니티</p>
 </footer>
