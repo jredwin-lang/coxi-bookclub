@@ -429,6 +429,75 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   .ov-btn { font-size: .78rem; padding: 6px 12px; }
   .app { padding: 20px 14px 60px; }
 }
+
+/* ── 베스트셀러 ─────────────────────────────────────────────── */
+.bestseller-panel { max-width: 1120px; margin: 0 auto; }
+.bs-summary {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:18px;
+  margin-bottom:18px; padding:18px 20px; background:var(--white);
+  border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:0 2px 16px var(--shadow);
+}
+.bs-summary h2 { margin:0 0 6px; color:var(--ink); font-size:1.2rem; }
+.bs-summary p { margin:0; color:var(--mid); font-size:.82rem; line-height:1.6; }
+.bs-meta { text-align:right; flex-shrink:0; color:var(--mid); font-size:.76rem; line-height:1.65; }
+.bs-meta strong { color:var(--burgundy); }
+.bs-tabs { display:flex; gap:7px; flex-wrap:wrap; margin:0 0 16px; }
+.bs-tab {
+  border:1px solid var(--border); background:var(--white); color:var(--mid);
+  border-radius:999px; padding:8px 13px; font-size:.78rem; font-weight:700; cursor:pointer;
+}
+.bs-tab:hover, .bs-tab.active { background:var(--burgundy); border-color:var(--burgundy); color:#fff; }
+.bs-status { padding:28px 0; text-align:center; color:var(--mid); font-size:.84rem; }
+.bs-list { display:flex; flex-direction:column; gap:9px; }
+.bs-row {
+  display:grid;
+  grid-template-columns:46px 58px 86px minmax(210px,1.45fr) minmax(150px,1fr) 72px 72px 64px;
+  gap:10px; align-items:center; padding:10px 12px; background:var(--white);
+  border:1px solid var(--border); border-radius:14px; box-shadow:0 1px 8px var(--shadow);
+}
+.bs-row:hover { border-color:#d8b8bf; transform:translateY(-1px); }
+.bs-head {
+  box-shadow:none; background:var(--petal); color:var(--burgundy);
+  font-size:.72rem; font-weight:800; padding-top:8px; padding-bottom:8px;
+}
+.bs-rank { font-size:1rem; font-weight:900; color:var(--burgundy); text-align:center; }
+.bs-cover {
+  width:48px; height:66px; border-radius:6px; overflow:hidden; background:linear-gradient(145deg,#f6eef0,#eee2e5);
+  display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+.bs-cover img { width:100%; height:100%; object-fit:cover; display:none; }
+.bs-cover-ph { font-size:.56rem; letter-spacing:.08em; font-weight:900; color:var(--rose); }
+.bs-field { color:var(--rose); font-size:.75rem; font-weight:800; word-break:keep-all; }
+.bs-title { font-weight:800; color:var(--ink); line-height:1.35; }
+.bs-author { color:var(--mid); font-size:.78rem; line-height:1.35; }
+.bs-store { text-align:center; font-size:.78rem; color:var(--ink); }
+.bs-change { text-align:center; font-size:.78rem; font-weight:800; color:var(--burgundy); }
+.bs-links { display:flex; gap:5px; margin-top:5px; }
+.bs-link { font-size:.68rem; color:var(--burgundy); text-decoration:none; border-bottom:1px solid transparent; }
+.bs-link:hover { border-bottom-color:var(--burgundy); }
+@media(max-width:800px){
+  .bs-summary { flex-direction:column; }
+  .bs-meta { text-align:left; }
+  .bs-head { display:none; }
+  .bs-row {
+    grid-template-columns:40px 50px 1fr 58px;
+    grid-template-areas:
+      "rank cover title change"
+      "rank cover author change"
+      "rank cover field stores";
+    gap:4px 9px; padding:10px;
+  }
+  .bs-rank { grid-area:rank; }
+  .bs-cover { grid-area:cover; width:44px; height:60px; }
+  .bs-field { grid-area:field; font-size:.69rem; }
+  .bs-title { grid-area:title; font-size:.9rem; }
+  .bs-author { grid-area:author; font-size:.72rem; }
+  .bs-store.yes24, .bs-store.aladin { grid-area:stores; display:inline; text-align:left; font-size:.68rem; }
+  .bs-store.yes24::after { content:" · "; }
+  .bs-store.aladin { margin-left:52px; }
+  .bs-change { grid-area:change; font-size:.72rem; }
+}
+
 </style>
 </head>
 <body>
@@ -443,6 +512,8 @@ footer strong { color: var(--gold-l); font-weight: 700; }
   <nav>
     <button class="active" onclick="showSection('books',this)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>책 목록</button>
+    <button onclick="showSection('bestsellers',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19V3"/></svg>베스트셀러</button>
     <button onclick="showSection('overlaps',this)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><circle cx="9" cy="9" r="6"/><circle cx="15" cy="15" r="6"/></svg>중복 도서</button>
     <button onclick="showSection('lists',this)">
@@ -477,6 +548,25 @@ footer strong { color: var(--gold-l); font-weight: 700; }
     <div class="big-cat-row" id="bigCatRow"></div>
     <div class="sub-cat-row" id="subCatRow"></div>
     <div class="book-grid" id="bookGrid"></div>
+  </div>
+
+  <!-- 베스트셀러 -->
+  <div id="sec-bestsellers" style="display:none">
+    <div class="bestseller-panel">
+      <div class="bs-summary">
+        <div>
+          <h2>통합 베스트셀러</h2>
+          <p>YES24 + 알라딘 베스트셀러 순위를 통합한 COXI 랭킹입니다.<br>순위 · 분야 · 도서 · 저자 · 서점별 순위 · 전일 대비를 한눈에 확인하세요.</p>
+        </div>
+        <div class="bs-meta">
+          <div><strong>자동 업데이트</strong> 매일 06:00~07:00 (KST)</div>
+          <div id="bsLastUpdated">Last Update 확인 중…</div>
+        </div>
+      </div>
+      <div class="bs-tabs" id="bsTabs"></div>
+      <div id="bsStatus" class="bs-status">베스트셀러 데이터를 불러오는 중입니다.</div>
+      <div id="bsList" class="bs-list"></div>
+    </div>
   </div>
 
   <!-- 중복 도서 -->
@@ -716,14 +806,236 @@ function toggleListBooks(card) {
   toggle.textContent = isOpen ? '▲ 접기' : '▼ 책 목록 보기';
 }
 
+// ── 베스트셀러 (Google Sheet 실시간 연동) ─────────────────────────
+const BESTSELLER_SHEET_ID = '1q6eKpi9A46jZ0749YlQi_24l_3Nr220G99aWufOFOkw';
+const BS_CATEGORIES = [
+  ['overall','종합 TOP20','종합 TOP100'],
+  ['novel','소설','소설'],
+  ['humanities','인문','인문'],
+  ['self','자기계발','자기계발'],
+  ['business','경제·경영','경제·경영'],
+  ['stocks','주식·투자','주식·투자']
+];
+let bsInitialized = false;
+let bsActive = 'overall';
+let bsStoreIndex = null;
+const bsCache = {};
+
+function bsLoadGviz(sheet, range) {
+  return new Promise((resolve, reject) => {
+    const cb = 'coxiGviz' + Date.now() + Math.floor(Math.random()*100000);
+    const script = document.createElement('script');
+    const cleanup = () => {
+      try { delete window[cb]; } catch(e) { window[cb] = undefined; }
+      script.remove();
+    };
+    const timer = setTimeout(() => { cleanup(); reject(new Error('데이터 응답 시간이 초과되었습니다.')); }, 12000);
+    window[cb] = (resp) => {
+      clearTimeout(timer);
+      cleanup();
+      if (!resp || resp.status === 'error') return reject(new Error('Google Sheet 데이터를 읽지 못했습니다.'));
+      const rows = (resp.table.rows || []).map(r =>
+        (r.c || []).map(c => c ? (c.f !== undefined && c.f !== null ? c.f : (c.v ?? '')) : '')
+      );
+      resolve(rows);
+    };
+    script.onerror = () => {
+      clearTimeout(timer); cleanup(); reject(new Error('Google Sheet 연결에 실패했습니다.'));
+    };
+    const tqx = 'out:json;responseHandler:' + cb;
+    script.src = 'https://docs.google.com/spreadsheets/d/' + BESTSELLER_SHEET_ID +
+      '/gviz/tq?sheet=' + encodeURIComponent(sheet) +
+      '&range=' + encodeURIComponent(range) +
+      '&headers=0&tqx=' + encodeURIComponent(tqx) +
+      '&_=' + Date.now();
+    document.head.appendChild(script);
+  });
+}
+
+function bsNorm(v) {
+  return String(v || '').toLowerCase().replace(/[\s·ㆍ:：,，.。'"“”‘’()\[\]{}<>〈〉《》「」『』!?！？\-_/\\]/g,'');
+}
+
+function bsFindData(rows, headerText, limit) {
+  const h = rows.findIndex(r => String(r[0] || '').trim() === headerText);
+  if (h < 0) return [];
+  return rows.slice(h + 1).filter(r => r.some(v => String(v || '').trim() !== '')).slice(0, limit);
+}
+
+async function bsLoadStores() {
+  if (bsStoreIndex) return bsStoreIndex;
+  const [yesRows, alaRows] = await Promise.all([
+    bsLoadGviz('YES24','A1:H101'),
+    bsLoadGviz('Aladin','A1:H101')
+  ]);
+  const make = rows => {
+    const data = bsFindData(rows,'순위',100);
+    const byTitle = {}, byIsbn = {};
+    data.forEach(r => {
+      const item = { rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'', publisher:r[4]||'', link:r[5]||'', updated:r[6]||'' };
+      if (item.title) byTitle[bsNorm(item.title)] = item;
+      if (item.isbn) byIsbn[item.isbn] = item;
+    });
+    return {data,byTitle,byIsbn};
+  };
+  bsStoreIndex = { yes:make(yesRows), aladin:make(alaRows) };
+  const stamp = bsStoreIndex.yes.data[0]?.updated || bsStoreIndex.aladin.data[0]?.updated || '';
+  if (stamp) document.getElementById('bsLastUpdated').textContent = 'Last Update ' + stamp;
+  return bsStoreIndex;
+}
+
+function bsMatchStore(title, isbn) {
+  if (!bsStoreIndex) return {yes:null,aladin:null};
+  const key = bsNorm(title);
+  const yes = (isbn && bsStoreIndex.yes.byIsbn[isbn]) || bsStoreIndex.yes.byTitle[key] || null;
+  const aladin = (isbn && bsStoreIndex.aladin.byIsbn[isbn]) || bsStoreIndex.aladin.byTitle[key] || null;
+  return {yes,aladin};
+}
+
+async function bsLoadCategory(key) {
+  if (bsCache[key]) return bsCache[key];
+  await bsLoadStores();
+  const cfg = BS_CATEGORIES.find(c=>c[0]===key);
+  if (!cfg) return [];
+  if (key === 'overall') {
+    const rows = await bsLoadGviz(cfg[2],'A1:I104');
+    const data = bsFindData(rows,'통합순위',20).map(r => {
+      const title = r[2]||'';
+      const stores = bsMatchStore(title,'');
+      const isbn = stores.yes?.isbn || stores.aladin?.isbn || '';
+      return {
+        rank:r[0], field:r[1], title, author:r[3], yesRank:r[5], aladinRank:r[6], change:r[8],
+        isbn, yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+      };
+    });
+    return bsCache[key] = data;
+  }
+  const rows = await bsLoadGviz(cfg[2],'A1:I15');
+  const data = bsFindData(rows,'통합순위',5).map(r => {
+    const title = r[1]||'', isbn = String(r[8]||'');
+    const stores = bsMatchStore(title,isbn);
+    return {
+      rank:r[0], field:cfg[1], title, author:r[2], yesRank:r[4], aladinRank:r[5], change:r[7],
+      isbn, yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+    };
+  });
+  return bsCache[key] = data;
+}
+
+function bsRenderTabs() {
+  document.getElementById('bsTabs').innerHTML = BS_CATEGORIES.map(([key,label]) =>
+    '<button class="bs-tab ' + (bsActive===key?'active':'') + '" onclick="bsSelect(\'' + key + '\')">' + label + '</button>'
+  ).join('');
+}
+
+function bsEscape(v) {
+  return String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function bsRenderList(items) {
+  const list = document.getElementById('bsList');
+  if (!items.length) {
+    list.innerHTML = '';
+    document.getElementById('bsStatus').textContent = '표시할 베스트셀러 데이터가 없습니다.';
+    document.getElementById('bsStatus').style.display = '';
+    return;
+  }
+  document.getElementById('bsStatus').style.display = 'none';
+  const head = '<div class="bs-row bs-head"><div>순위</div><div>표지</div><div>분야</div><div>도서</div><div>저자</div><div>YES24</div><div>알라딘</div><div>등락</div></div>';
+  const body = items.map(item => {
+    const links = (item.yesLink || item.aladinLink)
+      ? '<div class="bs-links">' +
+          (item.yesLink ? '<a class="bs-link" href="' + bsEscape(item.yesLink) + '" target="_blank" rel="noopener">YES24</a>' : '') +
+          (item.aladinLink ? '<a class="bs-link" href="' + bsEscape(item.aladinLink) + '" target="_blank" rel="noopener">알라딘</a>' : '') +
+        '</div>' : '';
+    return '<div class="bs-row">' +
+      '<div class="bs-rank">' + bsEscape(item.rank) + '</div>' +
+      '<div class="bs-cover"><div class="bs-cover-ph">COXI</div><img loading="lazy" alt="' + bsEscape(item.title) + ' 표지" data-isbn="' + bsEscape(item.isbn) + '"></div>' +
+      '<div class="bs-field">' + bsEscape(item.field) + '</div>' +
+      '<div class="bs-title">' + bsEscape(item.title) + links + '</div>' +
+      '<div class="bs-author">' + bsEscape(item.author) + '</div>' +
+      '<div class="bs-store yes24">' + (item.yesRank ? bsEscape(item.yesRank) + '위' : '—') + '</div>' +
+      '<div class="bs-store aladin">' + (item.aladinRank ? bsEscape(item.aladinRank) + '위' : '—') + '</div>' +
+      '<div class="bs-change">' + bsEscape(item.change || '—') + '</div>' +
+    '</div>';
+  }).join('');
+  list.innerHTML = head + body;
+  bsHydrateCovers();
+}
+
+async function bsGetCover(isbn) {
+  if (!isbn) return '';
+  const k = 'coxi-cover-' + isbn;
+  try {
+    const cached = localStorage.getItem(k);
+    if (cached !== null) return cached;
+  } catch(e) {}
+  try {
+    const url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + encodeURIComponent(isbn) +
+      '&maxResults=1&fields=items(volumeInfo(imageLinks))';
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('cover');
+    const data = await resp.json();
+    let cover = data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail ||
+                data.items?.[0]?.volumeInfo?.imageLinks?.smallThumbnail || '';
+    cover = cover ? cover.replace(/^http:/,'https:').replace('&zoom=1','&zoom=2') : '';
+    try { localStorage.setItem(k,cover); } catch(e) {}
+    return cover;
+  } catch(e) { return ''; }
+}
+
+async function bsHydrateCovers() {
+  const imgs = [...document.querySelectorAll('#bsList img[data-isbn]')];
+  for (let i=0;i<imgs.length;i+=5) {
+    const batch = imgs.slice(i,i+5);
+    await Promise.all(batch.map(async img => {
+      const isbn = img.dataset.isbn;
+      if (!isbn) return;
+      const cover = await bsGetCover(isbn);
+      if (!cover || !img.isConnected) return;
+      img.onload = () => {
+        img.style.display='block';
+        const ph = img.previousElementSibling;
+        if (ph) ph.style.display='none';
+      };
+      img.src = cover;
+    }));
+  }
+}
+
+async function bsSelect(key) {
+  bsActive = key;
+  bsRenderTabs();
+  const status = document.getElementById('bsStatus');
+  status.style.display = '';
+  status.textContent = '베스트셀러 데이터를 불러오는 중입니다.';
+  document.getElementById('bsList').innerHTML = '';
+  try {
+    const data = await bsLoadCategory(key);
+    bsRenderList(data);
+  } catch(err) {
+    status.style.display = '';
+    status.innerHTML = '데이터 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.<br><span style="font-size:.72rem">' + bsEscape(err.message) + '</span>';
+  }
+}
+
+function bsInit() {
+  if (bsInitialized) return;
+  bsInitialized = true;
+  bsRenderTabs();
+  bsSelect('overall');
+}
+
+
 // ── 섹션 전환 ─────────────────────────────────────────────────────
 function showSection(sec, btn) {
-  ['books','overlaps','lists'].forEach(s =>
+  ['books','bestsellers','overlaps','lists'].forEach(s =>
     document.getElementById('sec-'+s).style.display = s===sec?'':'none');
   // 히어로는 책 목록 탭일 때만 표시
   document.querySelector('.hero').style.display = sec==='books' ? '' : 'none';
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
+  if (sec === 'bestsellers') bsInit();
 }
 
 // ── 모달 ──────────────────────────────────────────────────────────
