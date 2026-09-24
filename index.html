@@ -555,11 +555,11 @@ footer strong { color: var(--gold-l); font-weight: 700; }
     <div class="bestseller-panel">
       <div class="bs-summary">
         <div>
-          <h2>통합 베스트셀러</h2>
-          <p>YES24 + 알라딘 베스트셀러 순위를 통합한 COXI 랭킹입니다.<br>순위 · 분야 · 도서 · 저자 · 서점별 순위 · 전일 대비를 한눈에 확인하세요.</p>
+          <h2>통합 베스트셀러 TOP 50</h2>
+          <p>원본 Google Sheet의 TOP100 데이터를 기반으로 웹에서는 상위 50권을 표시합니다.<br>순위 · 분야 · 도서 · 저자 · 서점별 순위 · 전일 대비를 한눈에 확인하세요.</p>
         </div>
         <div class="bs-meta">
-          <div><strong>자동 업데이트</strong> 매일 06:00~07:00 (KST)</div>
+          <div><strong>자동 업데이트</strong> 원본 Google Sheet와 연동</div>
           <div id="bsLastUpdated">Last Update 확인 중…</div>
         </div>
       </div>
@@ -809,7 +809,7 @@ function toggleListBooks(card) {
 // ── 베스트셀러 (Google Sheet 실시간 연동) ─────────────────────────
 const BESTSELLER_SHEET_ID = '1q6eKpi9A46jZ0749YlQi_24l_3Nr220G99aWufOFOkw';
 const BS_CATEGORIES = [
-  ['overall','종합 TOP20','종합 TOP100'],
+  ['overall','종합 TOP50','종합 TOP100'],
   ['novel','소설','소설'],
   ['humanities','인문','인문'],
   ['self','자기계발','자기계발'],
@@ -856,6 +856,23 @@ function bsNorm(v) {
   return String(v || '').toLowerCase().replace(/[\s·ㆍ:：,，.。'"“”‘’()\[\]{}<>〈〉《》「」『』!?！？\-_/\\]/g,'');
 }
 
+function bsYesCover(link) {
+  const m = String(link || '').match(/\/goods\/(\d+)/);
+  return m ? 'https://image.yes24.com/goods/' + m[1] + '/L' : '';
+}
+
+function bsFormatStamp(stamp) {
+  if (stamp === null || stamp === undefined || stamp === '') return '';
+  const s = String(stamp);
+  const m = s.match(/Date\((\d+),(\d+),(\d+),(\d+),(\d+),(\d+)\)/);
+  if (m) {
+    const pad = n => String(n).padStart(2,'0');
+    return m[1] + '-' + pad(Number(m[2])+1) + '-' + pad(m[3]) + ' ' +
+      pad(m[4]) + ':' + pad(m[5]) + ':' + pad(m[6]);
+  }
+  return s;
+}
+
 function bsRankedRows(rows, limit) {
   return rows.filter(r => {
     const v = String(r?.[0] ?? '').trim();
@@ -873,7 +890,7 @@ async function bsLoadStores() {
     const data = bsRankedRows(rows,100);
     const byTitle = {}, byIsbn = {};
     data.forEach(r => {
-      const item = { rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'', publisher:r[4]||'', link:r[5]||'', updated:r[6]||'' };
+      const item = { rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'', publisher:r[4]||'', link:r[5]||'', cover:bsYesCover(r[5]), updated:r[6]||'' };
       if (item.title) byTitle[bsNorm(item.title)] = item;
       if (item.isbn) byIsbn[item.isbn] = item;
     });
@@ -881,7 +898,8 @@ async function bsLoadStores() {
   };
   bsStoreIndex = { yes:make(yesRows), aladin:make(alaRows) };
   const stamp = bsStoreIndex.yes.data[0]?.updated || bsStoreIndex.aladin.data[0]?.updated || '';
-  if (stamp) document.getElementById('bsLastUpdated').textContent = 'Last Update ' + stamp;
+  const shownStamp = bsFormatStamp(stamp);
+  document.getElementById('bsLastUpdated').textContent = shownStamp ? ('Last Update ' + shownStamp) : 'Last Update 정보 없음';
   return bsStoreIndex;
 }
 
@@ -900,24 +918,24 @@ async function bsLoadCategory(key) {
   if (!cfg) return [];
   if (key === 'overall') {
     const rows = await bsLoadGviz(cfg[2],'A1:I104');
-    const data = bsRankedRows(rows,20).map(r => {
+    const data = bsRankedRows(rows,50).map(r => {
       const title = r[2]||'';
       const stores = bsMatchStore(title,'');
       const isbn = stores.yes?.isbn || stores.aladin?.isbn || '';
       return {
         rank:r[0], field:r[1], title, author:r[3], yesRank:r[5], aladinRank:r[6], change:r[8],
-        isbn, yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+        isbn, cover:stores.yes?.cover||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
       };
     });
     return bsCache[key] = data;
   }
-  const rows = await bsLoadGviz(cfg[2],'A1:I15');
-  const data = bsRankedRows(rows,5).map(r => {
+  const rows = await bsLoadGviz(cfg[2],'A1:I104');
+  const data = bsRankedRows(rows,50).map(r => {
     const title = r[1]||'', isbn = String(r[8]||'');
     const stores = bsMatchStore(title,isbn);
     return {
       rank:r[0], field:cfg[1], title, author:r[2], yesRank:r[4], aladinRank:r[5], change:r[7],
-      isbn, yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+      isbn, cover:stores.yes?.cover||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
     };
   });
   return bsCache[key] = data;
@@ -951,7 +969,7 @@ function bsRenderList(items) {
         '</div>' : '';
     return '<div class="bs-row">' +
       '<div class="bs-rank">' + bsEscape(item.rank) + '</div>' +
-      '<div class="bs-cover"><div class="bs-cover-ph">COXI</div><img loading="lazy" alt="' + bsEscape(item.title) + ' 표지" data-isbn="' + bsEscape(item.isbn) + '"></div>' +
+      '<div class="bs-cover"><div class="bs-cover-ph">COXI</div><img loading="lazy" alt="' + bsEscape(item.title) + ' 표지" data-cover="' + bsEscape(item.cover||'') + '" data-isbn="' + bsEscape(item.isbn) + '"></div>' +
       '<div class="bs-field">' + bsEscape(item.field) + '</div>' +
       '<div class="bs-title">' + bsEscape(item.title) + links + '</div>' +
       '<div class="bs-author">' + bsEscape(item.author) + '</div>' +
@@ -987,25 +1005,40 @@ async function bsGetCover(isbn) {
 
 async function bsHydrateCovers() {
   const imgs = [...document.querySelectorAll('#bsList img[data-isbn]')];
-  for (let i=0;i<imgs.length;i+=5) {
-    const batch = imgs.slice(i,i+5);
+  for (let i=0;i<imgs.length;i+=8) {
+    const batch = imgs.slice(i,i+8);
     await Promise.all(batch.map(async img => {
-      const isbn = img.dataset.isbn;
-      if (!isbn) return;
-      const cover = await bsGetCover(isbn);
+      let cover = img.dataset.cover || '';
+      if (!cover) {
+        const isbn = img.dataset.isbn;
+        if (isbn) cover = await bsGetCover(isbn);
+      }
       if (!cover || !img.isConnected) return;
       img.onload = () => {
         img.style.display='block';
         const ph = img.previousElementSibling;
         if (ph) ph.style.display='none';
       };
+      img.onerror = () => {
+        img.removeAttribute('src');
+        img.style.display='none';
+      };
       img.src = cover;
     }));
   }
 }
 
-async function bsSelect(key) {
+let bsLastFetchAt = 0;
+let bsRefreshTimer = null;
+
+function bsClearCache() {
+  bsStoreIndex = null;
+  Object.keys(bsCache).forEach(k => delete bsCache[k]);
+}
+
+async function bsSelect(key, forceRefresh=false) {
   bsActive = key;
+  if (forceRefresh || (Date.now() - bsLastFetchAt > 5 * 60 * 1000)) bsClearCache();
   bsRenderTabs();
   const status = document.getElementById('bsStatus');
   status.style.display = '';
@@ -1013,6 +1046,7 @@ async function bsSelect(key) {
   document.getElementById('bsList').innerHTML = '';
   try {
     const data = await bsLoadCategory(key);
+    bsLastFetchAt = Date.now();
     bsRenderList(data);
   } catch(err) {
     status.style.display = '';
@@ -1021,10 +1055,17 @@ async function bsSelect(key) {
 }
 
 function bsInit() {
-  if (bsInitialized) return;
-  bsInitialized = true;
-  bsRenderTabs();
-  bsSelect('overall');
+  if (!bsInitialized) {
+    bsInitialized = true;
+    bsRenderTabs();
+    bsSelect('overall', true);
+    bsRefreshTimer = setInterval(() => {
+      const sec = document.getElementById('sec-bestsellers');
+      if (sec && sec.style.display !== 'none') bsSelect(bsActive, true);
+    }, 5 * 60 * 1000);
+    return;
+  }
+  bsSelect(bsActive, true);
 }
 
 
