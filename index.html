@@ -856,10 +856,11 @@ function bsNorm(v) {
   return String(v || '').toLowerCase().replace(/[\s·ㆍ:：,，.。'"“”‘’()\[\]{}<>〈〉《》「」『』!?！？\-_/\\]/g,'');
 }
 
-function bsFindData(rows, headerText, limit) {
-  const h = rows.findIndex(r => String(r[0] || '').trim() === headerText);
-  if (h < 0) return [];
-  return rows.slice(h + 1).filter(r => r.some(v => String(v || '').trim() !== '')).slice(0, limit);
+function bsRankedRows(rows, limit) {
+  return rows.filter(r => {
+    const v = String(r?.[0] ?? '').trim();
+    return /^\d+$/.test(v) && Number(v) > 0;
+  }).slice(0, limit);
 }
 
 async function bsLoadStores() {
@@ -869,7 +870,7 @@ async function bsLoadStores() {
     bsLoadGviz('Aladin','A1:H101')
   ]);
   const make = rows => {
-    const data = bsFindData(rows,'순위',100);
+    const data = bsRankedRows(rows,100);
     const byTitle = {}, byIsbn = {};
     data.forEach(r => {
       const item = { rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'', publisher:r[4]||'', link:r[5]||'', updated:r[6]||'' };
@@ -899,7 +900,7 @@ async function bsLoadCategory(key) {
   if (!cfg) return [];
   if (key === 'overall') {
     const rows = await bsLoadGviz(cfg[2],'A1:I104');
-    const data = bsFindData(rows,'통합순위',20).map(r => {
+    const data = bsRankedRows(rows,20).map(r => {
       const title = r[2]||'';
       const stores = bsMatchStore(title,'');
       const isbn = stores.yes?.isbn || stores.aladin?.isbn || '';
@@ -911,7 +912,7 @@ async function bsLoadCategory(key) {
     return bsCache[key] = data;
   }
   const rows = await bsLoadGviz(cfg[2],'A1:I15');
-  const data = bsFindData(rows,'통합순위',5).map(r => {
+  const data = bsRankedRows(rows,5).map(r => {
     const title = r[1]||'', isbn = String(r[8]||'');
     const stores = bsMatchStore(title,isbn);
     return {
