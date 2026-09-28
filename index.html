@@ -1107,26 +1107,25 @@ async function bsGetCover(isbn) {
   } catch(e) { return ''; }
 }
 
-async function bsHydrateCovers() {
+function bsHydrateCovers() {
   const imgs = [...document.querySelectorAll('#bsList img[data-isbn]')];
-  for (const img of imgs) {
-    if (!img.isConnected) continue;
+  imgs.forEach(img => {
+    if (!img.isConnected) return;
     const direct = img.dataset.cover || '';
     const proxy = img.dataset.proxy || '';
-    const isbn = img.dataset.isbn || '';
     const candidates = [];
     if (direct) candidates.push(direct);
     if (proxy && proxy !== direct) candidates.push(proxy);
-    if (isbn) {
-      const google = await bsGetCover(isbn);
-      if (google) candidates.push(google);
-    }
     bsTryCover(img, candidates, 0);
-  }
+  });
 }
 
 function bsTryCover(img, candidates, idx) {
-  if (!img || !img.isConnected || idx >= candidates.length) return;
+  if (!img || !img.isConnected) return;
+  if (idx >= candidates.length) {
+    bsTryGoogleCover(img);
+    return;
+  }
   const src = candidates[idx];
   img.onload = () => {
     img.classList.add('loaded');
@@ -1139,6 +1138,23 @@ function bsTryCover(img, candidates, idx) {
     bsTryCover(img, candidates, idx + 1);
   };
   img.src = src;
+}
+
+async function bsTryGoogleCover(img) {
+  if (!img || !img.isConnected || img.dataset.googleTried === '1') return;
+  img.dataset.googleTried = '1';
+  const isbn = img.dataset.isbn || '';
+  if (!isbn) return;
+  const cover = await bsGetCover(isbn);
+  if (!cover || !img.isConnected) return;
+  img.onload = () => {
+    img.classList.add('loaded');
+    img.dataset.fullsrc = cover;
+    const ph = img.previousElementSibling;
+    if (ph) ph.style.visibility = 'hidden';
+  };
+  img.onerror = () => { img.removeAttribute('src'); };
+  img.src = cover;
 }
 
 function openBsCover(img) {
