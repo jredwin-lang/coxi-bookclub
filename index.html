@@ -475,6 +475,34 @@ footer strong { color: var(--gold-l); font-weight: 700; }
 .bs-links { display:flex; gap:5px; margin-top:5px; }
 .bs-link { font-size:.68rem; color:var(--burgundy); text-decoration:none; border-bottom:1px solid transparent; }
 .bs-link:hover { border-bottom-color:var(--burgundy); }
+.bs-cover { cursor:zoom-in; position:relative; }
+.bs-cover img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity .18s ease; }
+.bs-cover img.loaded { opacity:1; }
+.bs-cover-ph { position:relative; z-index:0; }
+.bs-cover-modal {
+  position:fixed; inset:0; z-index:3000; display:none; align-items:center; justify-content:center;
+  padding:24px; background:rgba(20,12,14,.82); backdrop-filter:blur(3px);
+}
+.bs-cover-modal.open { display:flex; }
+.bs-cover-modal-inner {
+  position:relative; max-width:min(520px,92vw); max-height:90vh; padding:14px;
+  background:#fff; border-radius:18px; box-shadow:0 20px 70px rgba(0,0,0,.4);
+}
+.bs-cover-modal img { display:block; max-width:100%; max-height:76vh; object-fit:contain; border-radius:10px; }
+.bs-cover-modal-title { margin-top:10px; text-align:center; color:var(--ink); font-weight:800; font-size:.9rem; }
+.bs-cover-modal-close {
+  position:absolute; top:7px; right:7px; width:34px; height:34px; border:0; border-radius:50%;
+  background:rgba(255,255,255,.94); color:var(--burgundy); font-size:20px; font-weight:800; cursor:pointer;
+  box-shadow:0 2px 12px rgba(0,0,0,.15);
+}
+.bs-row.store-view {
+  grid-template-columns:46px 58px 76px minmax(220px,1.5fr) minmax(150px,1fr) minmax(100px,.75fr) 80px 128px;
+}
+.bs-publisher { color:var(--mid); font-size:.76rem; line-height:1.35; }
+.bs-updated { color:var(--mid); font-size:.7rem; text-align:center; white-space:nowrap; }
+.bs-direct { text-align:center; }
+.bs-direct a { color:var(--burgundy); font-size:.72rem; font-weight:800; text-decoration:none; }
+.bs-direct a:hover { text-decoration:underline; }
 @media(max-width:800px){
   .bs-summary { flex-direction:column; }
   .bs-meta { text-align:left; }
@@ -556,7 +584,7 @@ footer strong { color: var(--gold-l); font-weight: 700; }
       <div class="bs-summary">
         <div>
           <h2>통합 베스트셀러 TOP 50</h2>
-          <p>원본 Google Sheet의 TOP100 데이터를 기반으로 웹에서는 상위 50권을 표시합니다.<br>순위 · 분야 · 도서 · 저자 · 서점별 순위 · 전일 대비를 한눈에 확인하세요.</p>
+          <p>알라딘, Yes24의 베스트셀러 데이터를 기반으로 표시합니다.<br>통합 · 분야별 · 서점별 TOP 50을 한눈에 비교하고 확인하세요.</p>
         </div>
         <div class="bs-meta">
           <div><strong>자동 업데이트</strong> <span id="bsLastUpdated">확인 중…</span></div>
@@ -600,6 +628,14 @@ footer strong { color: var(--gold-l); font-weight: 700; }
     <div class="modal-label">수록된 목록</div>
     <div class="modal-tags" id="mTags"></div>
     <div class="modal-cnt" id="mCnt"></div>
+  </div>
+</div>
+
+<div class="bs-cover-modal" id="bsCoverModal" onclick="if(event.target===this)closeBsCover()">
+  <div class="bs-cover-modal-inner">
+    <button class="bs-cover-modal-close" onclick="closeBsCover()" aria-label="닫기">×</button>
+    <img id="bsCoverModalImg" alt="책 표지 크게 보기">
+    <div class="bs-cover-modal-title" id="bsCoverModalTitle"></div>
   </div>
 </div>
 
@@ -813,7 +849,9 @@ const BS_CATEGORIES = [
   ['humanities','인문','인문'],
   ['self','자기계발','자기계발'],
   ['business','경제·경영','경제·경영'],
-  ['stocks','주식·투자','주식·투자']
+  ['stocks','주식·투자','주식·투자'],
+  ['yes24','YES24','YES24'],
+  ['aladin','알라딘','Aladin']
 ];
 let bsInitialized = false;
 let bsActive = 'overall';
@@ -859,6 +897,14 @@ function bsYesCover(link) {
   const m = String(link || '').match(/\/goods\/(\d+)/);
   return m ? 'https://image.yes24.com/goods/' + m[1] + '/L' : '';
 }
+function bsYesGoodsId(link) {
+  const m = String(link || '').match(/\/goods\/(\d+)/);
+  return m ? m[1] : '';
+}
+function bsProxyCover(url) {
+  if (!url) return '';
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(url) + '&w=360&fit=contain';
+}
 
 function bsFormatStamp(stamp) {
   if (stamp === null || stamp === undefined || stamp === '') return '';
@@ -895,17 +941,22 @@ async function bsLoadStores() {
     bsLoadGviz('YES24','A1:H101'),
     bsLoadGviz('Aladin','A1:H101')
   ]);
-  const make = rows => {
+  const make = (rows, store) => {
     const data = bsRankedRows(rows,100);
     const byTitle = {}, byIsbn = {};
     data.forEach(r => {
-      const item = { rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'', publisher:r[4]||'', link:r[5]||'', cover:bsYesCover(r[5]), updated:r[6]||'' };
+      const link = r[5]||'';
+      const item = {
+        rank:r[0], isbn:String(r[1]||''), title:r[2]||'', author:r[3]||'',
+        publisher:r[4]||'', link, cover:store==='YES24' ? bsYesCover(link) : '',
+        goodsId:store==='YES24' ? bsYesGoodsId(link) : '', updated:r[6]||'', store
+      };
       if (item.title) byTitle[bsNorm(item.title)] = item;
       if (item.isbn) byIsbn[item.isbn] = item;
     });
     return {data,byTitle,byIsbn};
   };
-  bsStoreIndex = { yes:make(yesRows), aladin:make(alaRows) };
+  bsStoreIndex = { yes:make(yesRows,'YES24'), aladin:make(alaRows,'알라딘') };
   await bsLoadLastUpdated();
   return bsStoreIndex;
 }
@@ -923,6 +974,20 @@ async function bsLoadCategory(key) {
   await bsLoadStores();
   const cfg = BS_CATEGORIES.find(c=>c[0]===key);
   if (!cfg) return [];
+  if (key === 'yes24' || key === 'aladin') {
+    const source = key === 'yes24' ? bsStoreIndex.yes.data : bsStoreIndex.aladin.data;
+    const other = key === 'yes24' ? bsStoreIndex.aladin : bsStoreIndex.yes;
+    const data = source.slice(0,50).map(r => {
+      const match = (r.isbn && other.byIsbn[r.isbn]) || other.byTitle[bsNorm(r.title)] || null;
+      const yesItem = key === 'yes24' ? r : match;
+      return {
+        kind:'store', rank:r.rank, store:r.store, field:r.store, title:r.title, author:r.author,
+        publisher:r.publisher, updated:r.updated, isbn:r.isbn, link:r.link,
+        cover:r.cover || yesItem?.cover || '', goodsId:r.goodsId || yesItem?.goodsId || ''
+      };
+    });
+    return bsCache[key] = data;
+  }
   if (key === 'overall') {
     const rows = await bsLoadGviz(cfg[2],'A1:I104');
     const data = bsRankedRows(rows,50).map(r => {
@@ -931,7 +996,7 @@ async function bsLoadCategory(key) {
       const isbn = stores.yes?.isbn || stores.aladin?.isbn || '';
       return {
         rank:r[0], field:r[1], title, author:r[3], yesRank:r[5], aladinRank:r[6], change:r[8],
-        isbn, cover:stores.yes?.cover||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+        isbn, cover:stores.yes?.cover||'', goodsId:stores.yes?.goodsId||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
       };
     });
     return bsCache[key] = data;
@@ -942,7 +1007,7 @@ async function bsLoadCategory(key) {
     const stores = bsMatchStore(title,isbn);
     return {
       rank:r[0], field:cfg[1], title, author:r[2], yesRank:r[4], aladinRank:r[5], change:r[7],
-      isbn, cover:stores.yes?.cover||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
+      isbn, cover:stores.yes?.cover||'', goodsId:stores.yes?.goodsId||'', yesLink:stores.yes?.link||'', aladinLink:stores.aladin?.link||''
     };
   });
   return bsCache[key] = data;
@@ -967,6 +1032,26 @@ function bsRenderList(items) {
     return;
   }
   document.getElementById('bsStatus').style.display = 'none';
+
+  if (items[0]?.kind === 'store') {
+    const head = '<div class="bs-row bs-head store-view"><div>순위</div><div>표지</div><div>서점</div><div>도서</div><div>저자</div><div>출판사</div><div>바로가기</div><div>수집시각</div></div>';
+    const body = items.map(item => {
+      return '<div class="bs-row store-view">' +
+        '<div class="bs-rank">' + bsEscape(item.rank) + '</div>' +
+        bsCoverHtml(item) +
+        '<div class="bs-field">' + bsEscape(item.store) + '</div>' +
+        '<div class="bs-title">' + bsEscape(item.title) + '</div>' +
+        '<div class="bs-author">' + bsEscape(item.author) + '</div>' +
+        '<div class="bs-publisher">' + bsEscape(item.publisher) + '</div>' +
+        '<div class="bs-direct">' + (item.link ? '<a href="' + bsEscape(item.link) + '" target="_blank" rel="noopener">보기</a>' : '—') + '</div>' +
+        '<div class="bs-updated">' + bsEscape(bsFormatStamp(item.updated)) + '</div>' +
+      '</div>';
+    }).join('');
+    list.innerHTML = head + body;
+    bsHydrateCovers();
+    return;
+  }
+
   const head = '<div class="bs-row bs-head"><div>순위</div><div>표지</div><div>분야</div><div>도서</div><div>저자</div><div>YES24</div><div>알라딘</div><div>등락</div></div>';
   const body = items.map(item => {
     const links = (item.yesLink || item.aladinLink)
@@ -976,7 +1061,7 @@ function bsRenderList(items) {
         '</div>' : '';
     return '<div class="bs-row">' +
       '<div class="bs-rank">' + bsEscape(item.rank) + '</div>' +
-      '<div class="bs-cover"><div class="bs-cover-ph">COXI</div><img loading="lazy" alt="' + bsEscape(item.title) + ' 표지" data-cover="' + bsEscape(item.cover||'') + '" data-isbn="' + bsEscape(item.isbn) + '"></div>' +
+      bsCoverHtml(item) +
       '<div class="bs-field">' + bsEscape(item.field) + '</div>' +
       '<div class="bs-title">' + bsEscape(item.title) + links + '</div>' +
       '<div class="bs-author">' + bsEscape(item.author) + '</div>' +
@@ -987,6 +1072,18 @@ function bsRenderList(items) {
   }).join('');
   list.innerHTML = head + body;
   bsHydrateCovers();
+}
+
+function bsCoverHtml(item) {
+  const direct = item.cover || '';
+  const proxy = direct ? bsProxyCover(direct) : '';
+  return '<div class="bs-cover" title="표지 크게 보기">' +
+    '<div class="bs-cover-ph">COXI</div>' +
+    '<img loading="lazy" referrerpolicy="no-referrer" alt="' + bsEscape(item.title) + ' 표지" ' +
+      'data-title="' + bsEscape(item.title) + '" data-cover="' + bsEscape(direct) + '" ' +
+      'data-proxy="' + bsEscape(proxy) + '" data-isbn="' + bsEscape(item.isbn) + '" ' +
+      'onclick="openBsCover(this);event.stopPropagation();">' +
+  '</div>';
 }
 
 async function bsGetCover(isbn) {
@@ -1012,27 +1109,50 @@ async function bsGetCover(isbn) {
 
 async function bsHydrateCovers() {
   const imgs = [...document.querySelectorAll('#bsList img[data-isbn]')];
-  for (let i=0;i<imgs.length;i+=8) {
-    const batch = imgs.slice(i,i+8);
-    await Promise.all(batch.map(async img => {
-      let cover = img.dataset.cover || '';
-      if (!cover) {
-        const isbn = img.dataset.isbn;
-        if (isbn) cover = await bsGetCover(isbn);
-      }
-      if (!cover || !img.isConnected) return;
-      img.onload = () => {
-        img.style.display='block';
-        const ph = img.previousElementSibling;
-        if (ph) ph.style.display='none';
-      };
-      img.onerror = () => {
-        img.removeAttribute('src');
-        img.style.display='none';
-      };
-      img.src = cover;
-    }));
+  for (const img of imgs) {
+    if (!img.isConnected) continue;
+    const direct = img.dataset.cover || '';
+    const proxy = img.dataset.proxy || '';
+    const isbn = img.dataset.isbn || '';
+    const candidates = [];
+    if (direct) candidates.push(direct);
+    if (proxy && proxy !== direct) candidates.push(proxy);
+    if (isbn) {
+      const google = await bsGetCover(isbn);
+      if (google) candidates.push(google);
+    }
+    bsTryCover(img, candidates, 0);
   }
+}
+
+function bsTryCover(img, candidates, idx) {
+  if (!img || !img.isConnected || idx >= candidates.length) return;
+  const src = candidates[idx];
+  img.onload = () => {
+    img.classList.add('loaded');
+    img.dataset.fullsrc = src;
+    const ph = img.previousElementSibling;
+    if (ph) ph.style.visibility = 'hidden';
+  };
+  img.onerror = () => {
+    img.removeAttribute('src');
+    bsTryCover(img, candidates, idx + 1);
+  };
+  img.src = src;
+}
+
+function openBsCover(img) {
+  if (!img || !img.classList.contains('loaded')) return;
+  const modal = document.getElementById('bsCoverModal');
+  const big = document.getElementById('bsCoverModalImg');
+  document.getElementById('bsCoverModalTitle').textContent = img.dataset.title || '';
+  big.src = img.dataset.fullsrc || img.src;
+  modal.classList.add('open');
+}
+function closeBsCover() {
+  const modal = document.getElementById('bsCoverModal');
+  modal.classList.remove('open');
+  document.getElementById('bsCoverModalImg').removeAttribute('src');
 }
 
 let bsLastFetchAt = 0;
@@ -1105,6 +1225,10 @@ function openModal(b) {
 function closeModal() {
   document.getElementById('backdrop').classList.remove('open');
 }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('bsCoverModal')?.classList.contains('open')) closeBsCover();
+});
 
 // ── 초기화 ───────────────────────────────────────────────────────
 renderBigCats();
