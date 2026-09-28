@@ -559,8 +559,7 @@ footer strong { color: var(--gold-l); font-weight: 700; }
           <p>원본 Google Sheet의 TOP100 데이터를 기반으로 웹에서는 상위 50권을 표시합니다.<br>순위 · 분야 · 도서 · 저자 · 서점별 순위 · 전일 대비를 한눈에 확인하세요.</p>
         </div>
         <div class="bs-meta">
-          <div><strong>자동 업데이트</strong> 원본 Google Sheet와 연동</div>
-          <div id="bsLastUpdated">Last Update 확인 중…</div>
+          <div><strong>자동 업데이트</strong> <span id="bsLastUpdated">확인 중…</span></div>
         </div>
       </div>
       <div class="bs-tabs" id="bsTabs"></div>
@@ -880,6 +879,16 @@ function bsRankedRows(rows, limit) {
   }).slice(0, limit);
 }
 
+async function bsLoadLastUpdated() {
+  try {
+    const rows = await bsLoadGviz('Dashboard','H2:H2');
+    const stamp = rows?.[0]?.[0] || '';
+    document.getElementById('bsLastUpdated').textContent = stamp ? bsFormatStamp(stamp) : '정보 없음';
+  } catch(e) {
+    document.getElementById('bsLastUpdated').textContent = '정보 없음';
+  }
+}
+
 async function bsLoadStores() {
   if (bsStoreIndex) return bsStoreIndex;
   const [yesRows, alaRows] = await Promise.all([
@@ -897,9 +906,7 @@ async function bsLoadStores() {
     return {data,byTitle,byIsbn};
   };
   bsStoreIndex = { yes:make(yesRows), aladin:make(alaRows) };
-  const stamp = bsStoreIndex.yes.data[0]?.updated || bsStoreIndex.aladin.data[0]?.updated || '';
-  const shownStamp = bsFormatStamp(stamp);
-  document.getElementById('bsLastUpdated').textContent = shownStamp ? ('Last Update ' + shownStamp) : 'Last Update 정보 없음';
+  await bsLoadLastUpdated();
   return bsStoreIndex;
 }
 
@@ -1058,6 +1065,7 @@ function bsInit() {
   if (!bsInitialized) {
     bsInitialized = true;
     bsRenderTabs();
+    bsLoadLastUpdated();
     bsSelect('overall', true);
     bsRefreshTimer = setInterval(() => {
       const sec = document.getElementById('sec-bestsellers');
@@ -1065,6 +1073,7 @@ function bsInit() {
     }, 5 * 60 * 1000);
     return;
   }
+  bsLoadLastUpdated();
   bsSelect(bsActive, true);
 }
 
